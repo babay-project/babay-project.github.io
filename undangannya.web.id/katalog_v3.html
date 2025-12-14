@@ -1,0 +1,1466 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Katalog Tema - Undangannya.web.id</title>
+
+        <meta
+            name="description"
+            content="Katalog tema undangan digital lengkap. Pilih desain favoritmu dan hubungi Admin Babay untuk pemesanan."
+        />
+        <meta name="author" content="Babay" />
+        <meta property="og:site_name" content="Undangan Digital" />
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <style>
+            :root {
+                --bg: #f8f9fa;
+                --text: #232323;
+                --primary: #1d6ef2; /* Warna Biru Babay */
+                --card-bg: #ffffff;
+                --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            }
+
+            body {
+                background-color: var(--bg);
+                font-family: "Poppins", sans-serif;
+                color: var(--text);
+                padding-bottom: 60px;
+            }
+
+            /* HERO SECTION */
+            .hero {
+                background: linear-gradient(135deg, #1d6ef2 0%, #0d47a1 100%);
+                color: white;
+                padding: 60px 20px 40px;
+                text-align: center;
+                margin-bottom: 40px;
+                border-radius: 0 0 30px 30px;
+            }
+            .hero h1 {
+                font-weight: 800;
+                font-size: 28px;
+                margin-bottom: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .hero p {
+                font-size: 14px;
+                opacity: 0.9;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            /* FILTER BUTTONS */
+            .filter-container {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 40px;
+                padding: 0 15px;
+            }
+            .filter-btn {
+                background: white;
+                border: 1px solid #e0e0e0;
+                border-radius: 50px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 600;
+                font-size: 13px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+            .filter-btn img {
+                width: 20px;
+                height: 20px;
+                object-fit: contain;
+            }
+            .filter-btn:hover,
+            .filter-btn.active {
+                background: var(--primary);
+                color: white;
+                border-color: var(--primary);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(29, 110, 242, 0.3);
+            }
+            .filter-btn.active img {
+                filter: brightness(0) invert(1);
+            }
+
+            /* CARD STYLE */
+            .tema-card {
+                background: var(--card-bg);
+                border-radius: 15px;
+                overflow: hidden;
+                border: none;
+                box-shadow: var(--shadow);
+                transition: transform 0.3s ease;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .tema-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .card-img-wrapper {
+                position: relative;
+                overflow: hidden;
+            }
+            .card-img-top {
+                width: 100%;
+                aspect-ratio: 4/3;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+            .tema-card:hover .card-img-top {
+                transform: scale(1.05);
+            }
+
+            .card-body {
+                padding: 15px;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex-grow: 1;
+            }
+            .badge-category {
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: #888;
+                margin-bottom: 5px;
+                display: block;
+            }
+            .card-title {
+                font-weight: 700;
+                font-size: 16px;
+                margin-bottom: 15px;
+                color: #333;
+            }
+            .btn-preview {
+                background-color: var(--primary);
+                color: white;
+                border-radius: 10px;
+                padding: 10px 0;
+                width: 100%;
+                font-weight: 600;
+                font-size: 13px;
+                text-decoration: none;
+                display: inline-block;
+                transition: background 0.2s;
+                border: none;
+            }
+            .btn-preview:hover {
+                background-color: #1557b0;
+                color: white;
+            }
+
+            /* FOOTER KONTAK (Tanpa Harga & FAQ) */
+            .footer-contact {
+                background: white;
+                margin-top: 60px;
+                padding: 40px 20px;
+                text-align: center;
+                border-top: 1px solid #eee;
+            }
+            .contact-box {
+                background: #f0f7ff;
+                border: 1px solid #cce0ff;
+                border-radius: 15px;
+                padding: 30px;
+                max-width: 600px;
+                margin: 0 auto 30px;
+            }
+            .contact-box h3 {
+                font-weight: 800;
+                font-size: 20px;
+                margin-bottom: 5px;
+                color: #333;
+            }
+            .contact-box p {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 20px;
+            }
+
+            .btn-wa {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: #25d366;
+                color: white;
+                padding: 12px 25px;
+                border-radius: 50px;
+                font-weight: 700;
+                text-decoration: none;
+                transition: transform 0.2s;
+                box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            }
+            .btn-wa:hover {
+                transform: scale(1.05);
+                color: white;
+                background: #20bd5a;
+            }
+
+            .udg-copy {
+                font-size: 12px;
+                font-weight: 600;
+                color: #888;
+            }
+
+            /* Floating WA */
+            .whatsapp-float {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #25d366;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 50px;
+                font-weight: bold;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                text-decoration: none;
+                z-index: 100;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .whatsapp-float:hover {
+                background: #20bd5a;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="hero">
+            <div class="container">
+                <h1>Katalog Tema Undangan</h1>
+                <p>
+                    Pilih desain terbaik untuk momen spesial Anda. Hubungi kami
+                    untuk pemesanan.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="filter-container">
+                <div
+                    class="filter-btn active"
+                    onclick="filterSelection('all', this)"
+                >
+                    <img
+                        src="https://weddingsaas.my.id/wp-content/uploads/2024/02/wds_favicon.png"
+                        alt="Semua"
+                    />
+                    Semua
+                </div>
+                <div
+                    class="filter-btn"
+                    onclick="filterSelection('aqiqah', this)"
+                >
+                    <img
+                        src="https://weddingsaas.my.id/wp-content/uploads/2024/06/Icon-Aqiqah.webp"
+                        alt="Aqiqah"
+                    />
+                    Aqiqah
+                </div>
+                <div
+                    class="filter-btn"
+                    onclick="filterSelection('khitan', this)"
+                >
+                    <img
+                        src="https://weddingsaas.my.id/wp-content/uploads/2024/06/icon-khitan.webp"
+                        alt="Khitan"
+                    />
+                    Khitan
+                </div>
+                <div
+                    class="filter-btn"
+                    onclick="filterSelection('pernikahan', this)"
+                >
+                    <img
+                        src="https://weddingsaas.my.id/wp-content/uploads/2024/06/icon-wedding.webp"
+                        alt="Pernikahan"
+                    />
+                    Pernikahan
+                </div>
+                <div
+                    class="filter-btn"
+                    onclick="filterSelection('ulangtahun', this)"
+                >
+                    <img
+                        src="https://weddingsaas.my.id/wp-content/uploads/2024/06/icon-birthday.webp"
+                        alt="Ulang Tahun"
+                    />
+                    Ulang Tahun
+                </div>
+            </div>
+
+            <div
+                class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4"
+                id="catalogGrid"
+            >
+                <div class="col filter-item aqiqah">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/aqiqah/aqiqah-01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Aqiqah</span>
+                            <h5 class="card-title">Aqiqah 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/aqiqah-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item aqiqah">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/aqiqah/aqiqah-02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Aqiqah</span>
+                            <h5 class="card-title">Aqiqah 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/aqiqah-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item aqiqah">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/aqiqah/aqiqah-03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Aqiqah</span>
+                            <h5 class="card-title">Aqiqah 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/aqiqah-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item aqiqah">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/aqiqah/aqiqah-04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Aqiqah</span>
+                            <h5 class="card-title">Aqiqah 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/aqiqah-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item aqiqah">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/aqiqah/aqiqah-05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Aqiqah</span>
+                            <h5 class="card-title">Aqiqah 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/aqiqah-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col filter-item khitan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/khitan/k01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Khitan</span>
+                            <h5 class="card-title">Khitan 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/khitan-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item khitan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/khitan/k02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Khitan</span>
+                            <h5 class="card-title">Khitan 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/khitan-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item khitan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/khitan/k03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Khitan</span>
+                            <h5 class="card-title">Khitan 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/khitan-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item khitan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/khitan/k04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Khitan</span>
+                            <h5 class="card-title">Khitan 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/khitan-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item khitan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/khitan/k05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Khitan</span>
+                            <h5 class="card-title">Khitan 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/khitan-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col filter-item ulangtahun">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/birthday/b01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Ulang Tahun</span>
+                            <h5 class="card-title">Birthday 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/birthday-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item ulangtahun">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/birthday/b02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Ulang Tahun</span>
+                            <h5 class="card-title">Birthday 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/birthday-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item ulangtahun">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/birthday/b03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Ulang Tahun</span>
+                            <h5 class="card-title">Birthday 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/birthday-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item ulangtahun">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/birthday/b04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Ulang Tahun</span>
+                            <h5 class="card-title">Birthday 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/birthday-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item ulangtahun">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/birthday/b05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Ulang Tahun</span>
+                            <h5 class="card-title">Birthday 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/birthday-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-06.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 06</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-06/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-07.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 07</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-07/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-08.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 08</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-08/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-09.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 09</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-09/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-10.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 10</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-10/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-11.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 11</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-11/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-12.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 12</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-12/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-13.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 13</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-13/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-14.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 14</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-14/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/basic-15.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Pernikahan</span>
+                            <h5 class="card-title">Basic 15</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/basic-15/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-06.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 06</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-06/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-07.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 07</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-07/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-08.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 08</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-08/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-09.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 09</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-09/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-10.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 10</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-10/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-11.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 11</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-11/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-12.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 12</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-12/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-13.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 13</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-13/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-14.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 14</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-14/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/floral-15.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Floral</span>
+                            <h5 class="card-title">Floral 15</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/floral-15/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/premium-01.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Premium</span>
+                            <h5 class="card-title">Premium 01</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/premium-01/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/premium-02.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Premium</span>
+                            <h5 class="card-title">Premium 02</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/premium-02/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/premium-03.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Premium</span>
+                            <h5 class="card-title">Premium 03</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/premium-03/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/premium-04.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Premium</span>
+                            <h5 class="card-title">Premium 04</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/premium-04/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col filter-item pernikahan">
+                    <div class="tema-card">
+                        <div class="card-img-wrapper">
+                            <img
+                                src="https://assets.weddingsaas.id/img/thumbnail/wedding/premium-05.webp"
+                                class="card-img-top"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="card-body">
+                            <span class="badge-category">Premium</span>
+                            <h5 class="card-title">Premium 05</h5>
+                            <a
+                                href="https://weddingsaas.my.id/preview-template/premium-05/"
+                                target="_blank"
+                                class="btn-preview"
+                                >Preview</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="footer-contact">
+            <div class="container">
+                <div class="contact-box">
+                    <h3>Tertarik dengan tema di atas?</h3>
+                    <p>
+                        Silakan hubungi Admin kami untuk pemesanan dan info
+                        lebih lanjut.
+                    </p>
+
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-center gap-3"
+                    >
+                        <a
+                            href="https://wa.me/6285758058711"
+                            class="btn-wa"
+                            target="_blank"
+                        >
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                width="20"
+                                height="20"
+                                alt="WA"
+                            />
+                            0857 5805 8711 (Babay 1)
+                        </a>
+                        <a
+                            href="https://wa.me/6287898643544"
+                            class="btn-wa"
+                            target="_blank"
+                        >
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                width="20"
+                                height="20"
+                                alt="WA"
+                            />
+                            0878 8964 3544 (Babay 2)
+                        </a>
+                    </div>
+                </div>
+                <div class="udg-copy">
+                    Copyright © 2025 <b>UNDANGANNYA.WEB.ID</b> – All Rights
+                    Reserved
+                </div>
+            </div>
+        </section>
+
+        <a
+            href="https://wa.me/6285758058711?text=Halo%20Babay,%20saya%20tertarik%20bikin%20undangan"
+            class="whatsapp-float"
+            target="_blank"
+        >
+            <img
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                width="24"
+                height="24"
+                alt="WA"
+            />
+            Hubungi Babay
+        </a>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function filterSelection(category, element) {
+                var items = document.getElementsByClassName("filter-item");
+                var btns = document.getElementsByClassName("filter-btn");
+
+                // Reset active class
+                for (var i = 0; i < btns.length; i++) {
+                    btns[i].classList.remove("active");
+                }
+                if (element) element.classList.add("active");
+
+                // Filter logic
+                if (category == "all") {
+                    for (var i = 0; i < items.length; i++)
+                        items[i].classList.remove("d-none");
+                } else {
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].classList.contains(category)) {
+                            items[i].classList.remove("d-none");
+                        } else {
+                            items[i].classList.add("d-none");
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
