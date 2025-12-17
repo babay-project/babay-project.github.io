@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Wedding Playlist Player</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            /* --- CSS STYLE ALA SPOTIFY --- */
+            :root {
+                --bg-color: #121212;
+                --card-color: #181818;
+                --text-primary: #ffffff;
+                --text-secondary: #b3b3b3;
+                --spotify-green: #1db954;
+                --hover-color: #282828;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family:
+                    "Circular",
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    Roboto,
+                    Helvetica,
+                    Arial,
+                    sans-serif;
+            }
+
+            body {
+                background-color: var(--bg-color);
+                color: var(--text-primary);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .player-container {
+                width: 100%;
+                max-width: 450px;
+                background-color: #000;
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                border: 1px solid #333;
+            }
+
+            /* Header / Wedding Title */
+            .wedding-header {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            .wedding-header h2 {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                margin-bottom: 5px;
+            }
+            .wedding-header p {
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+            }
+
+            /* Album Art Placeholder */
+            .album-art {
+                width: 100%;
+                aspect-ratio: 1/1;
+                background: linear-gradient(45deg, #4b1a1a, #1db954);
+                border-radius: 10px;
+                margin-bottom: 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            }
+            .album-art i {
+                font-size: 5rem;
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            /* Song Info */
+            .song-info {
+                margin-bottom: 20px;
+            }
+            .song-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .artist-name {
+                color: var(--text-secondary);
+                font-size: 1rem;
+            }
+
+            /* Progress Bar */
+            .progress-area {
+                margin-bottom: 20px;
+            }
+            .progress-bar {
+                width: 100%;
+                height: 5px;
+                background: #4d4d4d;
+                border-radius: 5px;
+                cursor: pointer;
+                position: relative;
+            }
+            .progress-fill {
+                height: 100%;
+                background: var(--spotify-green);
+                border-radius: 5px;
+                width: 0%;
+                transition: width 0.1s linear;
+            }
+            .progress-fill::after {
+                content: "";
+                position: absolute;
+                right: -6px;
+                top: -4px;
+                width: 12px;
+                height: 12px;
+                background: #fff;
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .progress-bar:hover .progress-fill::after {
+                opacity: 1;
+            }
+            .time-stamps {
+                display: flex;
+                justify-content: space-between;
+                color: var(--text-secondary);
+                font-size: 0.8rem;
+                margin-top: 8px;
+            }
+
+            /* Controls */
+            .controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                padding: 0 20px;
+            }
+            .btn-control {
+                background: none;
+                border: none;
+                color: var(--text-secondary);
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+            .btn-control:hover {
+                color: #fff;
+            }
+            .play-pause {
+                width: 60px;
+                height: 60px;
+                background-color: #fff;
+                color: #000;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.8rem;
+                transition: transform 0.2s;
+            }
+            .play-pause:hover {
+                transform: scale(1.05);
+                color: #000;
+            }
+
+            /* Playlist Section */
+            .playlist {
+                margin-top: 20px;
+                max-height: 250px;
+                overflow-y: auto;
+                border-top: 1px solid #333;
+                padding-top: 10px;
+            }
+            /* Custom Scrollbar */
+            .playlist::-webkit-scrollbar {
+                width: 5px;
+            }
+            .playlist::-webkit-scrollbar-thumb {
+                background: #555;
+                border-radius: 5px;
+            }
+
+            .playlist-item {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .playlist-item:hover {
+                background-color: var(--hover-color);
+            }
+            .playlist-item.active {
+                background-color: var(--hover-color);
+            }
+            .playlist-item.active .pl-title {
+                color: var(--spotify-green);
+            }
+            .pl-icon {
+                margin-right: 15px;
+                color: var(--text-secondary);
+            }
+            .pl-info {
+                flex: 1;
+            }
+            .pl-title {
+                font-size: 0.95rem;
+                font-weight: 500;
+            }
+            .pl-artist {
+                font-size: 0.8rem;
+                color: var(--text-secondary);
+            }
+
+            /* Animasi Equalizer sederhana saat main */
+            .playing-indicator {
+                display: none;
+                width: 15px;
+                height: 15px;
+            }
+            .active .playing-indicator {
+                display: block;
+                color: var(--spotify-green);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="player-container">
+            <div class="wedding-header">
+                <h2>WEDDING PLAYLIST</h2>
+                <p>Special Moments</p>
+            </div>
+
+            <div class="album-art">
+                <i class="fas fa-heart"></i>
+            </div>
+
+            <div class="song-info">
+                <div class="song-title" id="current-title">Judul Lagu</div>
+                <div class="artist-name" id="current-artist">Nama Artis</div>
+            </div>
+
+            <audio id="main-audio"></audio>
+
+            <div class="progress-area" id="progress-area">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="time-stamps">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn-control" id="prev-btn">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="play-pause" id="play-pause-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="btn-control" id="next-btn">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+
+            <div class="playlist" id="playlist-container"></div>
+        </div>
+
+        <script>
+            // --- DATA LAGU ---
+            // Sesuai dengan nama file yang ada di gambar kamu
+            const songs = [
+                {
+                    filename: "glen_kasih_putih.mp3",
+                    title: "Kasih Putih",
+                    artist: "Glenn Fredly",
+                },
+                {
+                    filename: "kahitna_menikahimu.mp3",
+                    title: "Menikahimu",
+                    artist: "Kahitna",
+                },
+                {
+                    filename: "muara_adera.mp3",
+                    title: "Muara",
+                    artist: "Adera",
+                },
+                {
+                    filename: "nadin_berpayung_tuhan.mp3",
+                    title: "Berpayung Tuhan",
+                    artist: "Nadin Amizah",
+                },
+                {
+                    filename: "sal_priadi_amin_paling_serius.mp3",
+                    title: "Amin Paling Serius",
+                    artist: "Sal Priadi & Nadin",
+                },
+                {
+                    filename: "sewindu_badai_pelangi.mp3",
+                    title: "Sewindu / Pelangi",
+                    artist: "Tulus / Badai", // Disesuaikan nama file
+                },
+            ];
+
+            // --- SELECTOR ---
+            const audio = document.getElementById("main-audio");
+            const playPauseBtn = document.getElementById("play-pause-btn");
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+            const progressArea = document.getElementById("progress-area");
+            const progressFill = document.getElementById("progress-fill");
+            const titleEl = document.getElementById("current-title");
+            const artistEl = document.getElementById("current-artist");
+            const currentTimeEl = document.getElementById("current-time");
+            const durationEl = document.getElementById("duration");
+            const playlistContainer =
+                document.getElementById("playlist-container");
+            const playIcon = '<i class="fas fa-play"></i>';
+            const pauseIcon = '<i class="fas fa-pause"></i>';
+
+            let songIndex = 0;
+            let isPlaying = false;
+
+            // --- FUNGSI UTAMA ---
+
+            function loadSong(index) {
+                const song = songs[index];
+                titleEl.innerText = song.title;
+                artistEl.innerText = song.artist;
+                // Pastikan tidak ada spasi aneh di URL, gunakan encodeURI jika perlu,
+                // tapi karena filenya lokal sederhana, langsung nama file aman.
+                audio.src = song.filename;
+
+                updatePlaylistUI(index);
+            }
+
+            function playSong() {
+                isPlaying = true;
+                audio.play();
+                playPauseBtn.innerHTML = pauseIcon;
+            }
+
+            function pauseSong() {
+                isPlaying = false;
+                audio.pause();
+                playPauseBtn.innerHTML = playIcon;
+            }
+
+            function togglePlay() {
+                if (isPlaying) {
+                    pauseSong();
+                } else {
+                    playSong();
+                }
+            }
+
+            function nextSong() {
+                songIndex++;
+                if (songIndex > songs.length - 1) {
+                    songIndex = 0;
+                }
+                loadSong(songIndex);
+                playSong();
+            }
+
+            function prevSong() {
+                songIndex--;
+                if (songIndex < 0) {
+                    songIndex = songs.length - 1;
+                }
+                loadSong(songIndex);
+                playSong();
+            }
+
+            function updateProgress(e) {
+                const { duration, currentTime } = e.srcElement;
+                if (isNaN(duration)) return;
+
+                const progressPercent = (currentTime / duration) * 100;
+                progressFill.style.width = `${progressPercent}%`;
+
+                // Update Text Waktu
+                const durationMinutes = Math.floor(duration / 60);
+                let durationSeconds = Math.floor(duration % 60);
+                if (durationSeconds < 10)
+                    durationSeconds = `0${durationSeconds}`;
+
+                // Hindari NaN saat loading
+                if (durationMinutes) {
+                    durationEl.innerText = `${durationMinutes}:${durationSeconds}`;
+                }
+
+                const currentMinutes = Math.floor(currentTime / 60);
+                let currentSeconds = Math.floor(currentTime % 60);
+                if (currentSeconds < 10) currentSeconds = `0${currentSeconds}`;
+                currentTimeEl.innerText = `${currentMinutes}:${currentSeconds}`;
+            }
+
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            // --- RENDER PLAYLIST ---
+            function renderPlaylist() {
+                playlistContainer.innerHTML = "";
+                songs.forEach((song, index) => {
+                    const item = document.createElement("div");
+                    item.classList.add("playlist-item");
+                    item.setAttribute("onclick", `playSpecificSong(${index})`);
+
+                    item.innerHTML = `
+                    <div class="pl-icon"><i class="fas fa-music"></i></div>
+                    <div class="pl-info">
+                        <div class="pl-title">${song.title}</div>
+                        <div class="pl-artist">${song.artist}</div>
+                    </div>
+                    <div class="playing-indicator"><i class="fas fa-volume-up"></i></div>
+                `;
+                    playlistContainer.appendChild(item);
+                });
+            }
+
+            function updatePlaylistUI(index) {
+                const items = document.querySelectorAll(".playlist-item");
+                items.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add("active");
+                        item.scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                        });
+                    } else {
+                        item.classList.remove("active");
+                    }
+                });
+            }
+
+            function playSpecificSong(index) {
+                songIndex = index;
+                loadSong(songIndex);
+                playSong();
+            }
+
+            // --- EVENT LISTENERS ---
+            playPauseBtn.addEventListener("click", togglePlay);
+            nextBtn.addEventListener("click", nextSong);
+            prevBtn.addEventListener("click", prevSong);
+            audio.addEventListener("timeupdate", updateProgress);
+            progressArea.addEventListener("click", setProgress);
+
+            // Auto Next saat lagu habis
+            audio.addEventListener("ended", nextSong);
+
+            // --- INIT ---
+            renderPlaylist();
+            loadSong(songIndex);
+        </script>
+    </body>
+</html>
