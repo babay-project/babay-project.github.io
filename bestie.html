@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="id" data-dc>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+<title>Kirim Undangan - Bestie (Tania & Bayu)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= THEME SETUP ================= */
+:root{
+  --dc-bg:#313338; --dc-bg-soft:#2b2d31; --dc-surface:#1e1f22;
+  --dc-text:#f2f3f5; --dc-muted:#b5bac1; --dc-stroke:#3f4247;
+  --dc-primary:#5865f2; --dc-primary-hover:#4752c4;
+  --dc-danger:#ef4444; --dc-ig:#E1306C;
+  --dcL-bg:#f2f3f5; --dcL-bg-soft:#ffffff; --dcL-surface:#ffffff;
+  --dcL-text:#060607; --dcL-muted:#6b7280; --dcL-stroke:#e5e7eb;
+}
+*{box-sizing:border-box}
+html, body { overflow-x: hidden; }
+html[data-dc] body{
+  margin:0; background:var(--dc-bg); color:var(--dc-text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap{max-width:800px;margin:0 auto;padding:20px 14px 100px}
+
+/* ===== Header ===== */
+.header{display:flex;flex-direction:column;gap:8px;margin:30px 0 24px;text-align:center}
+.header h1{margin:0;font-weight:800;font-size:22px;line-height:1.2;letter-spacing:-0.5px}
+.header p{margin:0;color:var(--dc-muted);font-weight:500;font-size:14px; padding:0 10px;}
+.badge-slug{ display:inline-block; background:#3b3f86; color:#cfd3ff; padding:4px 12px; border-radius:50px; font-weight:700; font-size:12px; margin-top:8px;}
+
+/* ===== Card & Inputs ===== */
+.card{ background:var(--dc-bg-soft); border:1px solid var(--dc-stroke); border-radius:16px; padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.04)}
+.section-title{margin:0 0 16px;font-weight:700;font-size:16px;display:flex; align-items:center; justify-content:space-between; color:var(--dc-text)}
+
+/* --- Dynamic Input Rows (Responsive Layout) --- */
+.input-container { display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
+.input-row{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  background:var(--dc-surface); padding:10px; border-radius:12px; border:1px solid var(--dc-stroke);
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+
+/* Styling Input */
+.inp-text, .inp-select {
+  padding:10px 12px; border:1px solid var(--dc-stroke); border-radius:8px;
+  background:var(--dc-bg-soft); color:var(--dc-text);
+  font-family: 'Inter', sans-serif; font-size:14px;
+  outline:0; transition:border-color .15s; height: 42px;
+}
+.inp-text:focus, .inp-select:focus { border-color:var(--dc-primary); }
+.inp-text:disabled { opacity:.65; cursor:not-allowed; }
+
+/* --- Layout Logic for Inputs --- */
+/* Default (Desktop/Tablet) */
+.inp-name { flex: 2; min-width: 150px; }
+.inp-select { flex: 0 0 110px; } /* sedikit lebih lebar untuk "WA GRUP" */
+.inp-contact { flex: 3; min-width: 150px; }
+.btn-icon-danger {
+  background:var(--dc-bg-soft); color:var(--dc-muted); border:1px solid var(--dc-stroke);
+  padding:0; border-radius:8px; width:42px; height:42px; flex:none;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.btn-icon-danger:hover { background:rgba(239, 68, 68, 0.1); color:var(--dc-danger); border-color:var(--dc-danger); }
+
+/* ===== Bestie/VVIP Toggle ===== */
+.vip-flag{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 10px;
+  height:42px;
+  border-radius:10px;
+  border:1px solid var(--dc-stroke);
+  background:var(--dc-bg-soft);
+  color:var(--dc-muted);
+  font-size:12px;
+  font-weight:800;
+  user-select:none;
+  flex:none;
+}
+.vip-flag input{
+  width:16px;height:16px;
+  accent-color: var(--dc-primary);
+}
+
+/* Mobile Breakpoint (Make it 2 Lines) */
+@media (max-width: 600px) {
+  .card { padding: 15px; }
+  .input-row { padding: 8px; gap: 8px; }
+
+  /* Row index kecil di depan */
+  .row-index { order: 0; }
+
+  /* Baris 1: Nama (Full) + Hapus (Ujung) */
+  .inp-name { flex: 1 1 calc(100% - 50px - 36px); order: 1; } /* 36px kira2 untuk index */
+  .btn-icon-danger { flex: 0 0 42px; order: 2; }
+
+  /* Baris 2: Select + BESTIE + Kontak */
+  .inp-select { flex: 0 0 110px; order: 3; }
+  .vip-flag { order: 4; flex: 0 0 auto; }
+  .inp-contact { flex: 1 1 calc(100% - 118px); order: 5; }
+}
+
+/* ===== Main Actions ===== */
+.actions{display:flex;gap:10px;margin-top:12px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  border-radius:10px; border:1px solid transparent; padding:12px 16px;
+  font-family: 'Inter', sans-serif; font-weight:600; font-size:14px;
+  text-decoration:none; transition:all .15s ease; flex:1;
+}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:18px;height:18px}
+
+.btn-primary{background:var(--dc-primary);color:#fff;box-shadow:0 4px 12px rgba(88,101,242,.2)}
+.btn-primary:hover{background:var(--dc-primary-hover)}
+.btn-outline{background:transparent; border:1px solid var(--dc-stroke); color:var(--dc-text);}
+.btn-outline:hover{background:var(--dc-surface); border-color:var(--dc-muted);}
+
+.btn-whatsapp{background:#25d366;color:#fff} .btn-whatsapp:hover{background:#1ebe5d}
+.btn-instagram{background:var(--dc-ig);color:#fff} .btn-instagram:hover{filter:brightness(1.1)}
+.btn-copy{background:#4b5563;color:#fff} .btn-copy:hover{background:#374151}
+
+.btn-block-danger{
+  background:rgba(239, 68, 68, 0.1); color:var(--dc-danger);
+  border:1px solid rgba(239, 68, 68, 0.3);
+}
+.btn-block-danger:hover{background:var(--dc-danger); color:#fff;}
+
+/* ===== Result List ===== */
+.list{margin-top:24px;display:grid;gap:16px}
+.item{ border:1px solid var(--dc-stroke); border-radius:14px; overflow:hidden; background:var(--dc-bg-soft);}
+.item-head{ display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#232428; border-bottom:1px solid var(--dc-stroke);}
+.item-name{font-weight:700; font-size:15px; color:var(--dc-text); display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.badge-contact { font-size:11px; padding:2px 6px; border-radius:6px; font-weight:900; text-transform:uppercase;}
+.bg-wa { background:rgba(37, 211, 102, 0.2); color:#25d366; }
+.bg-wag { background:rgba(37, 211, 102, 0.12); color:#25d366; border:1px dashed rgba(37, 211, 102, 0.35); }
+.bg-ig { background:rgba(225, 48, 108, 0.2); color:#E1306C; }
+.bg-oth { background:rgba(156, 163, 175, 0.18); color:#cbd5e1; }
+.bg-vvip{ background:rgba(88,101,242,0.18); color:#cfd3ff; border:1px solid rgba(88,101,242,0.35); }
+
+.item-body{padding:16px}
+.control-row{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+.control-row label{font-size:13px; font-weight:600; color:var(--dc-muted); white-space:nowrap}
+select.version-select{ width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--dc-stroke); background:var(--dc-surface); font-family:'Inter', sans-serif; font-size:13px; color:var(--dc-text);}
+.msg-preview{ width:100%; min-height:110px; font-size:13px; font-family:'Inter', sans-serif; padding:10px; margin-bottom:10px; background:var(--dc-surface); border-radius:8px; border:1px solid var(--dc-stroke); color:var(--dc-muted); outline:none; line-height: 1.5;}
+.msg-preview:focus { border-color:var(--dc-primary); }
+
+/* ===== Toast/Modal ===== */
+.modal{ position:fixed;inset:0;display:none;place-items:center;z-index:99; background:rgba(0,0,0,.6);backdrop-filter:blur(2px);}
+.modal.show{display:grid;animation:fade .2s}
+.modal-card{ background:#1e1f22; color:#f2f3f5; padding:20px; border:1px solid #3f4247; border-radius:16px;width:min(420px,90vw); text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.4);}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* Light Mode */
+html.light body{background:var(--dcL-bg);color:var(--dcL-text)}
+html.light .card, html.light .item {background:var(--dcL-bg-soft);border-color:var(--dcL-stroke)}
+html.light .item-head{background:#f9fafb;border-bottom-color:var(--dcL-stroke)}
+html.light .item-name{color:var(--dcL-text)}
+html.light .inp-text, html.light .inp-select, html.light textarea, html.light select, html.light .msg-preview{ background:var(--dcL-surface); color:var(--dcL-text); border-color:var(--dcL-stroke);}
+html.light .header p, html.light .control-row label{color:var(--dcL-muted)}
+html.light .badge-slug{background:#eef2ff;color:#4450db}
+html.light .input-row { background:var(--dcL-bg); border-color:var(--dcL-stroke); }
+html.light .btn-icon-danger { background:var(--dcL-surface); border-color:var(--dcL-stroke); }
+html.light .vip-flag{ background:var(--dcL-surface); border-color:var(--dcL-stroke); color:var(--dcL-muted); }
+html.light .modal-card{background:#fff;color:#000;border-color:#e5e7eb}
+
+/* Theme Switcher */
+.theme-switch{position:fixed;bottom:20px;right:20px;z-index:80}
+.btn-theme{background:var(--dc-surface);color:#fff;border:1px solid var(--dc-stroke);border-radius:50px;width:40px;height:40px;font-size:18px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
+
+/* ===== Bulk Controls (kotak merah) ===== */
+.bulk-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.bulk-controls .bulk-btn{
+  width:34px;height:34px;
+  border-radius:10px;
+  border:1px solid var(--dc-stroke);
+  background:var(--dc-surface);
+  color:var(--dc-text);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+.bulk-controls .bulk-btn:hover{ border-color:var(--dc-muted); }
+.bulk-controls .bulk-input{
+  width:70px;
+  text-align:center;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid var(--dc-stroke);
+  background:var(--dc-surface);
+  color:var(--dc-text);
+  height:34px;
+  outline:0;
+}
+.bulk-controls small{
+  color:var(--dc-muted);
+  font-weight:600;
+  font-size:12px;
+}
+
+/* ===== Row Number (kotak biru) ===== */
+.row-index{
+  width:28px; height:28px;
+  border-radius:8px;
+  border:1px solid var(--dc-stroke);
+  background:rgba(88,101,242,.15);
+  color:#cfd3ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:12px;
+  flex:none;
+}
+
+/* ===== Bottom actions row (Clear + Export) ===== */
+.bottom-actions-row{
+  display:flex;
+  gap:10px;
+  margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+<main class="wrap">
+  <header class="header">
+    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjk8SNB-OGiqfL3WA6MfxFAUWRMC07PNG3JVKTIiwN71sf4ZvfhlURCQxIEhBKv_BBXTLLAejbEbM6JCHqzBRdsw1TCi8XdTGfqB2-QUwpe14MqRR52YUHIhsuhH0tysjGiwsdElnSbSjRz8cfbb-UEMFZlqAReoXuFGN-aaoS1m3aBt4JhnNIFI79a8KSk"
+         alt="Logo" style="width:80px;border-radius:16px;margin:0 auto 12px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+    <h1>Undangan Bestie</h1>
+    <div><span class="badge-slug">Slug: tania-bayu + vvip</span></div>
+    <p>Ini khusus sahabat/teman dekat/bestie. Pesan akan berisi 2 link (utama + VVIP). Untuk VVIP perlu PIN (minta ke Bayu atau Tania).</p>
+  </header>
+
+  <section class="card">
+    <div class="section-title">
+      <span>📝 Data Bestie</span>
+
+      <!-- Kotak merah: bulk controls -->
+      <div class="bulk-controls">
+        <button id="bulkMinus" class="bulk-btn" type="button" title="Kurangi baris">−</button>
+        <input id="bulkCount" class="bulk-input" type="number" min="1" max="50" value="1" />
+        <button id="bulkPlus" class="bulk-btn" type="button" title="Tambah baris">+</button>
+        <small>/ max 50</small>
+
+        <button id="addOneBtn" class="btn btn-outline" style="font-size:11px; padding:6px 12px; width:auto; flex:none;">+ Tambah</button>
+      </div>
+    </div>
+
+    <div id="inputContainer" class="input-container"></div>
+
+    <div class="actions">
+      <button id="processBtn" class="btn btn-primary" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Generate Undangan
+      </button>
+    </div>
+  </section>
+
+  <div id="list" class="list"></div>
+
+  <div id="bottomAction" style="display:none">
+    <div class="bottom-actions-row">
+      <button id="exportCsvBtn" class="btn btn-outline" type="button">Export CSV</button>
+
+      <button id="clearAllBtn" class="btn btn-block-danger" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-right:6px">
+          <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        </svg>
+        Hapus Semua Data
+      </button>
+    </div>
+  </div>
+</main>
+
+<div id="modal" class="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle" style="margin:0 0 8px">Info</h3>
+    <p id="modalDesc" style="margin:0 0 16px;font-size:14px;opacity:0.8">Pesan</p>
+    <button onclick="document.getElementById('modal').classList.remove('show')" class="btn btn-primary" style="width:100%" type="button">OK</button>
+  </div>
+</div>
+
+<div class="theme-switch"><button id="themeToggle" class="btn-theme" type="button">🌙</button></div>
+
+<script>
+(function(){
+  const $ = (s)=>document.querySelector(s);
+
+  // --- CONFIG ---
+  const FIXED_SLUG = "tania-bayu";
+  const VVIP_SLUG = "vvip";
+  const BASE_URL = "https://undangannya.web.id/";
+  const MAX_ROWS = 50;
+
+  // --- HELPERS ---
+  const showModal = (title, desc) => {
+    $('#modalTitle').textContent = title;
+    $('#modalDesc').textContent = desc;
+    $('#modal').classList.add('show');
+  };
+
+  const copyText = async (text) => {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch { return false; }
+  };
+
+  const cleanPhone = (p) => {
+    let n = (p||'').replace(/\D/g,'');
+    if(n.startsWith('0')) return '62' + n.substring(1);
+    if(n.startsWith('8')) return '62' + n;
+    return n;
+  };
+
+  const cleanIG = (u) => (u||'').replace('@','').trim();
+
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+  const makeLink = (slug, to) =>
+    `${BASE_URL}${slug}/?to=${encodeURIComponent(to).replace(/%20/g,'+')}`;
+
+  const PARAGRAPH_BESTIE = {
+    invite: "Tanpa mengurangi rasa hormat, kami mengundang para sahabat, teman dekat, dan bestie-bestie kami untuk hadir di acara pernikahan kami,",
+    thanks: "Kami sangat mengharapkan kehadiran para sahabat, teman dekat, dan bestie-bestie kami untuk ikut meramaikan sekaligus memberikan doa restu 😇"
+  };
+
+  // --- TEMPLATES ---
+  const TEMPLATES = [
+    {
+      key: 'tania', label: 'Versi Tania',
+      build: (to, isVvip) => {
+        const p = PARAGRAPH_BESTIE;
+        const linkMain = makeLink(FIXED_SLUG, to);
+
+        // khusus bestie: defaultnya 2 link
+        if(isVvip){
+          const linkVvip = makeLink(VVIP_SLUG, to);
+          return `Assalamu'alaikum Wr. Wb\n\n*${to}*\n\nBismillahirrohmanirrohim.\n*The Wedding Of Tania & Bayu*\n\n${p.invite}\n\nBerikut 2 link website undangan online kami:\n1) Undangan Utama:\n${linkMain}\n\n2) Undangan VVIP (butuh PIN):\n${linkVvip}\n\n*Catatan:* untuk membuka undangan VVIP, minta *kode PIN* ke Bayu atau Tania ya.\n\n${p.thanks}\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Wr. Wb.\n\nHormat kami yg berbahagia,\nTania & Bayu`;
+        }
+
+        // fallback (kalau checkbox dimatikan)
+        return `Assalamu'alaikum Wr. Wb\n\n*${to}*\n\nBismillahirrohmanirrohim.\n*The Wedding Of Tania & Bayu*\n\n${p.invite}\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n${linkMain}\n\n${p.thanks}\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Wr. Wb.\n\nHormat kami yg berbahagia,\nTania & Bayu`;
+      }
+    },
+    {
+      key: 'bayu', label: 'Versi Bayu',
+      build: (to, isVvip) => {
+        const p = PARAGRAPH_BESTIE;
+        const linkMain = makeLink(FIXED_SLUG, to);
+
+        if(isVvip){
+          const linkVvip = makeLink(VVIP_SLUG, to);
+          return `Assalamu'alaikum Wr. Wb\n\n*${to}*\nBismillahirrohmanirrohim.\n*The Wedding Of Bayu & Tania*\n\n${p.invite}\n\nBerikut 2 link website undangan online kami:\n1) Undangan Utama:\n${linkMain}\n\n2) Undangan VVIP (butuh PIN):\n${linkVvip}\n\n*Catatan:* untuk membuka undangan VVIP, minta *kode PIN* ke Bayu atau Tania ya.\n\n${p.thanks}\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Warohamtullahi Wabarokatuh.\n\nHormat kami yg berbahagia,\nBayu & Tania`;
+        }
+
+        return `Assalamu'alaikum Wr. Wb\n\n*${to}*\nBismillahirrohmanirrohim.\n*The Wedding Of Bayu & Tania*\n\n${p.invite}\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n${linkMain}\n\n${p.thanks}\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Warohamtullahi Wabarokatuh.\n\nHormat kami yg berbahagia,\nBayu & Tania`;
+      }
+    }
+  ];
+
+  // --- STATE ---
+  let items = [];
+  const listEl = $('#list');
+  const container = $('#inputContainer');
+  const bottomAction = $('#bottomAction');
+
+  const updateRowNumbers = () => {
+    const rows = container.querySelectorAll('.input-row');
+    rows.forEach((row, i) => {
+      const el = row.querySelector('.row-index');
+      if(el) el.textContent = (i + 1);
+    });
+    const bulkCountEl = $('#bulkCount');
+    if(bulkCountEl) bulkCountEl.value = rows.length;
+  };
+
+  const setRowCount = (count) => {
+    let target = clamp(parseInt(count || 1, 10), 1, MAX_ROWS);
+    const current = container.querySelectorAll('.input-row').length;
+
+    if(target > current){
+      for(let i = 0; i < (target - current); i++){
+        createInputRow();
+      }
+    } else if(target < current){
+      for(let i = current; i > target; i--){
+        container.lastElementChild?.remove();
+      }
+    }
+
+    if(container.querySelectorAll('.input-row').length === 0){
+      createInputRow();
+    }
+
+    updateRowNumbers();
+  };
+
+  // --- INPUT ROW LOGIC ---
+  const createInputRow = () => {
+    if(container.querySelectorAll('.input-row').length >= MAX_ROWS){
+      showModal('Batas Maksimal', `Maksimal ${MAX_ROWS} data.`);
+      return;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'input-row';
+    div.innerHTML = `
+      <div class="row-index">1</div>
+
+      <input type="text" class="inp-text inp-name" placeholder="Nama Bestie" required>
+      <button class="btn-icon-danger" title="Hapus Baris" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <select class="inp-select inp-type">
+        <option value="wa">WA</option>
+        <option value="wa_group">WA GRUP</option>
+        <option value="ig">IG</option>
+        <option value="other">Lainnya</option>
+      </select>
+
+      <label class="vip-flag" title="Bestie/VVIP: pesan berisi 2 link + instruksi PIN">
+        <input type="checkbox" class="inp-vvip" checked>
+        <span>BESTIE</span>
+      </label>
+
+      <input type="text" class="inp-text inp-contact" placeholder="No. WA (08xx)">
+    `;
+
+    // Remove handler
+    div.querySelector('.btn-icon-danger').onclick = () => {
+      div.remove();
+      if(container.querySelectorAll('.input-row').length === 0) createInputRow();
+      updateRowNumbers();
+    };
+
+    // Placeholder & disable logic
+    const sel = div.querySelector('.inp-type');
+    const inpC = div.querySelector('.inp-contact');
+    sel.onchange = () => {
+      const v = sel.value;
+      if(v === 'wa'){
+        inpC.disabled = false;
+        inpC.placeholder = 'No. WA (08xx)';
+      } else if(v === 'ig'){
+        inpC.disabled = false;
+        inpC.placeholder = 'Username IG';
+      } else if(v === 'wa_group'){
+        inpC.value = '';
+        inpC.disabled = true;
+        inpC.placeholder = 'Pilih grup langsung di WhatsApp';
+      } else { // other
+        inpC.value = '';
+        inpC.disabled = true;
+        inpC.placeholder = 'Copy saja (tanpa kirim otomatis)';
+      }
+    };
+    sel.onchange(); // init
+
+    container.appendChild(div);
+    updateRowNumbers();
+  };
+
+  // --- RENDER CARD LOGIC ---
+  const render = () => {
+    listEl.innerHTML = '';
+
+    if(items.length === 0){
+      bottomAction.style.display = 'none';
+      listEl.innerHTML = '<div style="text-align:center;color:var(--dc-muted);font-size:14px;padding:20px;">Hasil generate akan muncul di sini.</div>';
+      return;
+    }
+    bottomAction.style.display = 'block';
+
+    const badgeMap = { wa:'bg-wa', wa_group:'bg-wag', ig:'bg-ig', other:'bg-oth' };
+    const badgeLabelMap = { wa:'WA', wa_group:'WA GRUP', ig:'IG', other:'LAINNYA' };
+
+    items.forEach((item, idx) => {
+      const el = document.createElement('div'); el.className = 'item';
+
+      // Header
+      const head = document.createElement('div'); head.className = 'item-head';
+      const badgeClass = badgeMap[item.type] || 'bg-oth';
+      const badgeLabel = badgeLabelMap[item.type] || (item.type||'').toUpperCase();
+
+      head.innerHTML = `
+        <span class="item-name">
+          ${idx + 1}. ${item.name}
+          <span class="badge-contact ${badgeClass}">${badgeLabel}</span>
+          ${item.isVvip ? `<span class="badge-contact bg-vvip">BESTIE</span>` : ``}
+        </span>
+      `;
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn-icon-danger';
+      delBtn.type = 'button';
+      delBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+      delBtn.onclick = () => { items.splice(idx,1); render(); };
+      head.appendChild(delBtn);
+
+      // Body
+      const body = document.createElement('div'); body.className = 'item-body';
+
+      // Version Select
+      const ctrl = document.createElement('div'); ctrl.className = 'control-row';
+      const sel = document.createElement('select'); sel.className = 'version-select';
+      sel.innerHTML = TEMPLATES.map(t => `<option value="${t.key}">${t.label}</option>`).join('');
+      sel.value = item.version;
+      ctrl.appendChild(document.createTextNode('Versi: ')); ctrl.appendChild(sel);
+
+      // Textarea Preview
+      const area = document.createElement('textarea'); area.className = 'msg-preview';
+      const updateMsg = () => {
+        item.version = sel.value;
+        const tmpl = TEMPLATES.find(t => t.key === item.version) || TEMPLATES[0];
+        area.value = tmpl.build(item.name, !!item.isVvip);
+      };
+      sel.addEventListener('change', updateMsg);
+      updateMsg();
+
+      // Actions Buttons
+      const actions = document.createElement('div'); actions.className = 'actions';
+
+      // Copy Button (selalu ada)
+      const copyBtn = document.createElement('button'); copyBtn.className = 'btn btn-copy';
+      copyBtn.type = 'button';
+      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+      copyBtn.style.flex = "0 0 auto";
+      copyBtn.onclick = async () => {
+        const ok = await copyText(area.value);
+        showModal(ok ? 'Disalin' : 'Gagal', ok ? 'Pesan disalin.' : 'Izin clipboard ditolak.');
+      };
+
+      // Send Button (tergantung tipe)
+      const sendBtn = document.createElement('button');
+      sendBtn.type = 'button';
+
+      if(item.type === 'wa') {
+        sendBtn.className = 'btn btn-whatsapp';
+        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Kirim WA';
+        sendBtn.onclick = () => {
+          const phone = cleanPhone(item.contact || '');
+          if(phone.length < 5) return showModal('Error', 'Nomor WA tidak valid.');
+          window.open(`https://wa.me/${phone}?text=${encodeURIComponent(area.value)}`, '_blank');
+        };
+
+      } else if(item.type === 'wa_group') {
+        sendBtn.className = 'btn btn-whatsapp';
+        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Pilih Grup WA';
+        sendBtn.onclick = () => {
+          window.open(`https://wa.me/?text=${encodeURIComponent(area.value)}`, '_blank');
+        };
+
+      } else if(item.type === 'ig') {
+        sendBtn.className = 'btn btn-instagram';
+        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Copy & Buka IG';
+        sendBtn.onclick = async () => {
+          if(!item.contact) return showModal('Error', 'Username IG kosong.');
+          await copyText(area.value);
+          window.open(`https://instagram.com/${cleanIG(item.contact)}`, '_blank');
+        };
+
+      } else {
+        sendBtn.className = 'btn btn-outline';
+        sendBtn.textContent = 'Tidak ada kirim';
+        sendBtn.onclick = () => showModal('Info', 'Untuk "Lainnya", pesan hanya bisa di-copy.');
+      }
+
+      if(item.type === 'other'){
+        actions.append(copyBtn);
+      } else {
+        actions.append(copyBtn, sendBtn);
+      }
+
+      body.append(ctrl, area, actions);
+      el.append(head, body);
+      listEl.appendChild(el);
+    });
+  };
+
+  // --- EXPORT CSV ---
+  const exportCSV = () => {
+    if(items.length === 0){
+      return showModal('Kosong', 'Belum ada data yang bisa di-export.');
+    }
+
+    const header = ['no','nama','tipe','kontak','versi','is_bestie','link_utama','link_vvip'];
+    const rows = items.map((it, i) => {
+      const linkUtama = makeLink(FIXED_SLUG, it.name);
+      const linkVvip = it.isVvip ? makeLink(VVIP_SLUG, it.name) : '';
+      const safe = (v) => `"${String(v ?? '').replace(/"/g,'""')}"`;
+      return [
+        i+1,
+        it.name,
+        it.type,
+        it.contact || '',
+        it.version || '',
+        it.isVvip ? 'yes' : 'no',
+        linkUtama,
+        linkVvip
+      ].map(safe).join(',');
+    });
+
+    const csv = header.join(',') + '\n' + rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `data-bestie-${FIXED_SLUG}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  // --- EVENTS ---
+  $('#addOneBtn').addEventListener('click', () => {
+    createInputRow();
+    updateRowNumbers();
+  });
+
+  // Bulk controls
+  $('#bulkPlus').addEventListener('click', () => {
+    const cur = container.querySelectorAll('.input-row').length;
+    setRowCount(cur + 1);
+  });
+
+  $('#bulkMinus').addEventListener('click', () => {
+    const cur = container.querySelectorAll('.input-row').length;
+    setRowCount(cur - 1);
+  });
+
+  $('#bulkCount').addEventListener('input', (e) => {
+    setRowCount(e.target.value);
+  });
+
+  $('#processBtn').addEventListener('click', () => {
+    const rows = container.querySelectorAll('.input-row');
+    if(rows.length === 0) return showModal('Kosong', 'Tambahkan baris dulu.');
+
+    let newItemsCount = 0;
+
+    rows.forEach(row => {
+      if(items.length >= MAX_ROWS) return;
+
+      const name = row.querySelector('.inp-name').value.trim();
+      const type = row.querySelector('.inp-type').value;
+      const contactEl = row.querySelector('.inp-contact');
+      const contact = (contactEl && !contactEl.disabled) ? contactEl.value.trim() : '';
+      const isVvip = !!row.querySelector('.inp-vvip')?.checked;
+
+      if(!name) return;
+
+      if(type === 'wa' && !contact) return;
+      if(type === 'ig' && !contact) return;
+
+      items.push({ name, type, contact, version: 'tania', isVvip });
+      newItemsCount++;
+    });
+
+    if(newItemsCount > 0){
+      const desired = parseInt($('#bulkCount')?.value || '1', 10);
+      container.innerHTML = '';
+      setRowCount(desired);
+      render();
+
+      if(items.length >= MAX_ROWS){
+        showModal('Batas Maksimal', `Hasil generate maksimal ${MAX_ROWS} data.`);
+      }
+    } else {
+      showModal('Ups', 'Pastikan nama terisi. Untuk WA isi nomor, untuk IG isi username.');
+    }
+  });
+
+  $('#clearAllBtn').addEventListener('click', () => {
+    if(confirm('Yakin hapus semua hasil generate?')){
+      items = [];
+      render();
+    }
+  });
+
+  $('#exportCsvBtn').addEventListener('click', exportCSV);
+
+  // Init Theme
+  const root = document.documentElement;
+  const tBtn = $('#themeToggle');
+  const applyTheme = (isDark) => {
+    if(isDark){ root.classList.remove('light'); tBtn.innerHTML = '🌙'; }
+    else { root.classList.add('light'); tBtn.innerHTML = '🌞'; }
+  };
+  applyTheme(true);
+  tBtn.onclick = () => applyTheme(!root.classList.contains('light'));
+
+  // Init
+  setRowCount(1);
+  render();
+
+})();
+</script>
+</body>
+</html>
