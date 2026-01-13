@@ -1,664 +1,1414 @@
 <!doctype html>
 <html lang="id" data-dc>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-<title>Kirim Undangan - Tania & Bayu</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"
+        />
+        <title>Generator Undangan Universal</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* ================= THEME SETUP ================= */
+            :root {
+                --dc-bg: #313338;
+                --dc-bg-soft: #2b2d31;
+                --dc-surface: #1e1f22;
+                --dc-text: #f2f3f5;
+                --dc-muted: #b5bac1;
+                --dc-stroke: #3f4247;
+                --dc-primary: #5865f2;
+                --dc-primary-hover: #4752c4;
+                --dc-danger: #ef4444;
+                --dc-ig: #e1306c;
+                --dc-wa: #25d366;
+                --dcL-bg: #f2f3f5;
+                --dcL-bg-soft: #ffffff;
+                --dcL-surface: #ffffff;
+                --dcL-text: #060607;
+                --dcL-muted: #6b7280;
+                --dcL-stroke: #e5e7eb;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            html[data-dc] body {
+                margin: 0;
+                background: var(--dc-bg);
+                color: var(--dc-text);
+                font-family: "Inter", sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            .wrap {
+                max-width: 850px;
+                margin: 0 auto;
+                padding: 20px 14px 100px;
+            }
 
-<style>
-/* ================= THEME SETUP ================= */
-:root{
-  --dc-bg:#313338; --dc-bg-soft:#2b2d31; --dc-surface:#1e1f22;
-  --dc-text:#f2f3f5; --dc-muted:#b5bac1; --dc-stroke:#3f4247;
-  --dc-primary:#5865f2; --dc-primary-hover:#4752c4;
-  --dc-danger:#ef4444; --dc-ig:#E1306C;
-  --dcL-bg:#f2f3f5; --dcL-bg-soft:#ffffff; --dcL-surface:#ffffff;
-  --dcL-text:#060607; --dcL-muted:#6b7280; --dcL-stroke:#e5e7eb;
-}
-*{box-sizing:border-box}
-html, body { overflow-x: hidden; }
-html[data-dc] body{
-  margin:0; background:var(--dc-bg); color:var(--dc-text);
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-.wrap{max-width:800px;margin:0 auto;padding:20px 14px 100px}
+            /* ===== Header ===== */
+            .header {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin: 30px 0 24px;
+                text-align: center;
+            }
+            .header p {
+                margin: 0;
+                color: var(--dc-muted);
+                font-weight: 500;
+                font-size: 14px;
+                padding: 0 10px;
+            }
 
-/* ===== Header ===== */
-.header{display:flex;flex-direction:column;gap:8px;margin:30px 0 24px;text-align:center}
-.header h1{margin:0;font-weight:800;font-size:22px;line-height:1.2;letter-spacing:-0.5px}
-.header p{margin:0;color:var(--dc-muted);font-weight:500;font-size:14px; padding:0 10px;}
-.badge-slug{ display:inline-block; background:#3b3f86; color:#cfd3ff; padding:4px 12px; border-radius:50px; font-weight:700; font-size:12px; margin-top:8px;}
+            /* ===== Config Box ===== */
+            .config-box {
+                background: var(--dc-bg-soft);
+                border: 1px solid var(--dc-stroke);
+                border-radius: 16px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            .config-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+            .config-group {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .config-group label {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--dc-muted);
+                text-transform: uppercase;
+            }
+            .config-input {
+                width: 100%;
+                padding: 10px;
+                border-radius: 8px;
+                border: 1px solid var(--dc-stroke);
+                background: var(--dc-surface);
+                color: var(--dc-text);
+                font-family: "Inter", sans-serif;
+                outline: none;
+                transition: 0.2s;
+            }
+            .config-input:focus {
+                border-color: var(--dc-primary);
+            }
+            .config-hint {
+                font-size: 11px;
+                color: var(--dc-muted);
+                display: block;
+                margin-top: 4px;
+            }
 
-/* ===== Card & Inputs ===== */
-.card{ background:var(--dc-bg-soft); border:1px solid var(--dc-stroke); border-radius:16px; padding:20px; box-shadow:0 12px 28px rgba(0,0,0,.04)}
-.section-title{margin:0 0 16px;font-weight:700;font-size:16px;display:flex; align-items:center; justify-content:space-between; color:var(--dc-text)}
+            /* ===== Preview Section (Toggleable) ===== */
+            .preview-box {
+                background: rgba(88, 101, 242, 0.1);
+                border: 1px dashed var(--dc-primary);
+                border-radius: 12px;
+                padding: 16px;
+                margin-top: 12px;
+                display: none; /* Default Hidden */
+                text-align: left;
+                animation: slideDown 0.3s ease;
+            }
+            .preview-box.show {
+                display: block;
+            }
+            .preview-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--dc-primary);
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .preview-content {
+                background: var(--dc-surface);
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 13px;
+                line-height: 1.5;
+                color: var(--dc-muted);
+                border: 1px solid var(--dc-stroke);
+                white-space: pre-wrap;
+            }
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
 
-/* --- Dynamic Input Rows (Responsive Layout) --- */
-.input-container { display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
-.input-row{
-  display:flex; flex-wrap:wrap; gap:8px; align-items:center;
-  background:var(--dc-surface); padding:10px; border-radius:12px; border:1px solid var(--dc-stroke);
-  animation: fadeIn 0.2s ease;
-}
-@keyframes fadeIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+            @media (max-width: 600px) {
+                .config-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
 
-/* Styling Input */
-.inp-text, .inp-select {
-  padding:10px 12px; border:1px solid var(--dc-stroke); border-radius:8px;
-  background:var(--dc-bg-soft); color:var(--dc-text);
-  font-family: 'Inter', sans-serif; font-size:14px;
-  outline:0; transition:border-color .15s; height: 42px;
-}
-.inp-text:focus, .inp-select:focus { border-color:var(--dc-primary); }
-.inp-text:disabled { opacity:.65; cursor:not-allowed; }
+            /* ===== Card & Inputs ===== */
+            .card {
+                background: var(--dc-bg-soft);
+                border: 1px solid var(--dc-stroke);
+                border-radius: 16px;
+                padding: 20px;
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04);
+                margin-bottom: 20px;
+            }
+            .section-title {
+                margin: 0 0 16px;
+                font-weight: 700;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                color: var(--dc-text);
+            }
 
-/* --- Layout Logic for Inputs --- */
-/* Default (Desktop/Tablet) */
-.inp-name { flex: 2; min-width: 150px; }
-.inp-select { flex: 0 0 110px; } /* sedikit lebih lebar untuk "WA GRUP" */
-.inp-contact { flex: 3; min-width: 150px; }
-.btn-icon-danger {
-  background:var(--dc-bg-soft); color:var(--dc-muted); border:1px solid var(--dc-stroke);
-  padding:0; border-radius:8px; width:42px; height:42px; flex:none;
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-}
-.btn-icon-danger:hover { background:rgba(239, 68, 68, 0.1); color:var(--dc-danger); border-color:var(--dc-danger); }
+            .input-container {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            .input-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                background: var(--dc-surface);
+                padding: 12px;
+                border-radius: 12px;
+                border: 1px solid var(--dc-stroke);
+                animation: fadeIn 0.2s ease;
+            }
 
-/* Mobile Breakpoint (Make it 2 Lines) */
-@media (max-width: 600px) {
-  .card { padding: 15px; }
-  .input-row { padding: 8px; gap: 8px; }
+            /* Visual Selector */
+            .type-selector {
+                display: flex;
+                gap: 6px;
+                flex: 3;
+                min-width: 280px;
+                flex-wrap: wrap;
+            }
+            .type-btn {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                padding: 8px 10px;
+                border-radius: 8px;
+                border: 1px solid var(--dc-stroke);
+                background: var(--dc-bg-soft);
+                color: var(--dc-muted);
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 600;
+                transition: all 0.2s;
+                min-width: 80px;
+            }
+            .type-btn:hover {
+                background: var(--dc-stroke);
+            }
+            .type-btn svg,
+            .btn svg {
+                width: 16px;
+                height: 16px;
+                flex: none;
+            }
 
-  /* Row index kecil di depan */
-  .row-index { order: 0; }
+            .type-btn.active {
+                border-color: transparent;
+                color: #fff;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+            .type-btn[data-type="other"].active {
+                background: var(--dc-muted);
+                color: #000;
+            }
+            .type-btn[data-type="wa"].active {
+                background: var(--dc-wa);
+            }
+            .type-btn[data-type="wa_group"].active {
+                background: #075e54;
+                border: 1px dashed #4df88a;
+            }
+            .type-btn[data-type="ig"].active {
+                background: var(--dc-ig);
+            }
 
-  /* Baris 1: Nama (Full) + Hapus (Ujung) */
-  .inp-name { flex: 1 1 calc(100% - 50px - 36px); order: 1; } /* 36px kira2 untuk index */
-  .btn-icon-danger { flex: 0 0 42px; order: 2; }
+            .inp-text {
+                padding: 10px 12px;
+                border: 1px solid var(--dc-stroke);
+                border-radius: 8px;
+                background: var(--dc-bg-soft);
+                color: var(--dc-text);
+                font-family: "Inter", sans-serif;
+                font-size: 14px;
+                outline: 0;
+                transition: border-color 0.15s;
+                height: 40px;
+            }
+            .inp-text:focus {
+                border-color: var(--dc-primary);
+            }
+            .inp-name {
+                flex: 2;
+                min-width: 150px;
+            }
+            .inp-contact {
+                flex: 2;
+                min-width: 140px;
+            }
+            .btn-icon-danger {
+                background: var(--dc-bg-soft);
+                color: var(--dc-muted);
+                border: 1px solid var(--dc-stroke);
+                padding: 0;
+                border-radius: 8px;
+                width: 40px;
+                height: 40px;
+                flex: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .btn-icon-danger:hover {
+                background: rgba(239, 68, 68, 0.1);
+                color: var(--dc-danger);
+                border-color: var(--dc-danger);
+            }
 
-  /* Baris 2: Select (Kecil) + Kontak (Sisa) */
-  .inp-select { flex: 0 0 110px; order: 3; }
-  .inp-contact { flex: 1 1 calc(100% - 118px); order: 4; }
-}
+            @media (max-width: 768px) {
+                .input-row {
+                    gap: 8px;
+                    padding: 10px;
+                }
+                .row-index {
+                    order: 0;
+                }
+                .inp-name {
+                    order: 1;
+                    flex: 1 1 60%;
+                }
+                .btn-icon-danger {
+                    order: 2;
+                    flex: 0 0 40px;
+                }
+                .type-selector {
+                    order: 3;
+                    flex: 1 1 100%;
+                    margin-top: 4px;
+                }
+                .inp-contact {
+                    order: 4;
+                    flex: 1 1 100%;
+                }
+            }
 
-/* ===== Main Actions ===== */
-.actions{display:flex;gap:10px;margin-top:12px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-  border-radius:10px; border:1px solid transparent; padding:12px 16px;
-  font-family: 'Inter', sans-serif; font-weight:600; font-size:14px;
-  text-decoration:none; transition:all .15s ease; flex:1;
-}
-.btn:active{transform:translateY(1px)}
-.btn svg{width:18px;height:18px}
+            /* ===== Actions ===== */
+            .actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 12px;
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+                border-radius: 10px;
+                border: 1px solid transparent;
+                padding: 12px 16px;
+                font-family: "Inter", sans-serif;
+                font-weight: 600;
+                font-size: 14px;
+                text-decoration: none;
+                transition: all 0.15s ease;
+                flex: 1;
+            }
+            .btn:active {
+                transform: translateY(1px);
+            }
+            .btn-primary {
+                background: var(--dc-primary);
+                color: #fff;
+                box-shadow: 0 4px 12px rgba(88, 101, 242, 0.2);
+            }
+            .btn-primary:hover {
+                background: var(--dc-primary-hover);
+            }
+            .btn-secondary {
+                background: var(--dc-surface);
+                border: 1px solid var(--dc-stroke);
+                color: var(--dc-text);
+            }
+            .btn-secondary:hover {
+                background: var(--dc-stroke);
+            }
+            .btn-outline {
+                background: transparent;
+                border: 1px solid var(--dc-stroke);
+                color: var(--dc-text);
+            }
+            .btn-outline:hover {
+                background: var(--dc-surface);
+                border-color: var(--dc-muted);
+            }
+            .btn-whatsapp {
+                background: #25d366;
+                color: #fff;
+            }
+            .btn-whatsapp:hover {
+                background: #1ebe5d;
+            }
+            .btn-instagram {
+                background: var(--dc-ig);
+                color: #fff;
+            }
+            .btn-instagram:hover {
+                filter: brightness(1.1);
+            }
+            .btn-copy {
+                background: #4b5563;
+                color: #fff;
+            }
+            .btn-copy:hover {
+                background: #374151;
+            }
+            .btn-block-danger {
+                background: rgba(239, 68, 68, 0.1);
+                color: var(--dc-danger);
+                border: 1px solid rgba(239, 68, 68, 0.3);
+            }
+            .btn-block-danger:hover {
+                background: var(--dc-danger);
+                color: #fff;
+            }
 
-.btn-primary{background:var(--dc-primary);color:#fff;box-shadow:0 4px 12px rgba(88,101,242,.2)}
-.btn-primary:hover{background:var(--dc-primary-hover)}
-.btn-outline{background:transparent; border:1px solid var(--dc-stroke); color:var(--dc-text);}
-.btn-outline:hover{background:var(--dc-surface); border-color:var(--dc-muted);}
+            /* List */
+            .list {
+                margin-top: 24px;
+                display: grid;
+                gap: 16px;
+            }
+            .item {
+                border: 1px solid var(--dc-stroke);
+                border-radius: 14px;
+                overflow: hidden;
+                background: var(--dc-bg-soft);
+            }
+            .item-head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 16px;
+                background: #232428;
+                border-bottom: 1px solid var(--dc-stroke);
+            }
+            .item-name {
+                font-weight: 700;
+                font-size: 15px;
+                color: var(--dc-text);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .badge-contact {
+                font-size: 11px;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            .bg-wa {
+                background: rgba(37, 211, 102, 0.2);
+                color: #25d366;
+            }
+            .bg-wag {
+                background: rgba(37, 211, 102, 0.12);
+                color: #25d366;
+                border: 1px dashed rgba(37, 211, 102, 0.35);
+            }
+            .bg-ig {
+                background: rgba(225, 48, 108, 0.2);
+                color: #e1306c;
+            }
+            .bg-oth {
+                background: rgba(156, 163, 175, 0.18);
+                color: #cbd5e1;
+            }
+            .item-body {
+                padding: 16px;
+            }
+            .control-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 12px;
+            }
+            .control-row label {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--dc-muted);
+                white-space: nowrap;
+            }
+            select.version-select {
+                width: 100%;
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--dc-stroke);
+                background: var(--dc-surface);
+                font-family: "Inter", sans-serif;
+                font-size: 13px;
+                color: var(--dc-text);
+            }
+            .msg-preview {
+                width: 100%;
+                min-height: 120px;
+                font-size: 13px;
+                font-family: "Inter", sans-serif;
+                padding: 10px;
+                margin-bottom: 10px;
+                background: var(--dc-surface);
+                border-radius: 8px;
+                border: 1px solid var(--dc-stroke);
+                color: var(--dc-muted);
+                outline: none;
+                line-height: 1.5;
+            }
+            .msg-preview:focus {
+                border-color: var(--dc-primary);
+            }
 
-.btn-whatsapp{background:#25d366;color:#fff} .btn-whatsapp:hover{background:#1ebe5d}
-.btn-instagram{background:var(--dc-ig);color:#fff} .btn-instagram:hover{filter:brightness(1.1)}
-.btn-copy{background:#4b5563;color:#fff} .btn-copy:hover{background:#374151}
+            /* Modal */
+            .modal {
+                position: fixed;
+                inset: 0;
+                display: none;
+                place-items: center;
+                z-index: 9999;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(2px);
+            }
+            .modal.show {
+                display: grid;
+                animation: fade 0.2s;
+            }
+            .modal-card {
+                background: #1e1f22;
+                color: #f2f3f5;
+                padding: 20px;
+                border: 1px solid #3f4247;
+                border-radius: 16px;
+                width: min(400px, 90vw);
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+            @keyframes fade {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
 
-.btn-block-danger{
-  background:rgba(239, 68, 68, 0.1); color:var(--dc-danger);
-  border:1px solid rgba(239, 68, 68, 0.3);
-}
-.btn-block-danger:hover{background:var(--dc-danger); color:#fff;}
+            /* Light Mode */
+            html.light body {
+                background: var(--dcL-bg);
+                color: var(--dcL-text);
+            }
+            html.light .card,
+            html.light .item,
+            html.light .config-box {
+                background: var(--dcL-bg-soft);
+                border-color: var(--dcL-stroke);
+            }
+            html.light .item-head {
+                background: #f9fafb;
+                border-bottom-color: var(--dcL-stroke);
+            }
+            html.light .item-name {
+                color: var(--dcL-text);
+            }
+            html.light .inp-text,
+            html.light .inp-select,
+            html.light textarea,
+            html.light select,
+            html.light .msg-preview,
+            html.light .config-input,
+            html.light .preview-content,
+            html.light .type-btn {
+                background: var(--dcL-surface);
+                color: var(--dcL-text);
+                border-color: var(--dcL-stroke);
+            }
+            html.light .header p,
+            html.light .control-row label,
+            html.light .config-group label,
+            html.light .config-hint {
+                color: var(--dcL-muted);
+            }
+            html.light .input-row {
+                background: var(--dcL-bg);
+                border-color: var(--dcL-stroke);
+            }
+            html.light .btn-icon-danger {
+                background: var(--dcL-surface);
+                border-color: var(--dcL-stroke);
+            }
+            html.light .modal-card {
+                background: #fff;
+                color: #000;
+                border-color: #e5e7eb;
+            }
+            html.light .type-btn:hover {
+                background: var(--dcL-stroke);
+            }
+            html.light .type-btn.active {
+                color: #fff;
+                border-color: transparent;
+            }
 
-/* ===== Result List ===== */
-.list{margin-top:24px;display:grid;gap:16px}
-.item{ border:1px solid var(--dc-stroke); border-radius:14px; overflow:hidden; background:var(--dc-bg-soft);}
-.item-head{ display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#232428; border-bottom:1px solid var(--dc-stroke);}
-.item-name{font-weight:700; font-size:15px; color:var(--dc-text); display:flex; align-items:center; gap:8px;}
-.badge-contact { font-size:11px; padding:2px 6px; border-radius:4px; font-weight:700; text-transform:uppercase;}
-.bg-wa { background:rgba(37, 211, 102, 0.2); color:#25d366; }
-.bg-wag { background:rgba(37, 211, 102, 0.12); color:#25d366; border:1px dashed rgba(37, 211, 102, 0.35); }
-.bg-ig { background:rgba(225, 48, 108, 0.2); color:#E1306C; }
-.bg-oth { background:rgba(156, 163, 175, 0.18); color:#cbd5e1; }
+            /* Theme Switcher */
+            .theme-switch {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 9999;
+            }
+            .btn-theme {
+                background: var(--dc-surface);
+                color: #fff;
+                border: 1px solid var(--dc-stroke);
+                border-radius: 50px;
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            html.light .btn-theme {
+                background: #fff;
+                color: #000;
+                border-color: #e5e7eb;
+            }
 
-.item-body{padding:16px}
-.control-row{display:flex; align-items:center; gap:10px; margin-bottom:12px}
-.control-row label{font-size:13px; font-weight:600; color:var(--dc-muted); white-space:nowrap}
-select.version-select{ width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--dc-stroke); background:var(--dc-surface); font-family:'Inter', sans-serif; font-size:13px; color:var(--dc-text);}
-.msg-preview{ width:100%; min-height:100px; font-size:13px; font-family:'Inter', sans-serif; padding:10px; margin-bottom:10px; background:var(--dc-surface); border-radius:8px; border:1px solid var(--dc-stroke); color:var(--dc-muted); outline:none; line-height: 1.5;}
-.msg-preview:focus { border-color:var(--dc-primary); }
+            .bulk-controls {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .bulk-controls .bulk-btn {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                border: 1px solid var(--dc-stroke);
+                background: var(--dc-surface);
+                color: var(--dc-text);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 800;
+            }
+            .bulk-controls .bulk-input {
+                width: 70px;
+                text-align: center;
+                padding: 8px 10px;
+                border-radius: 10px;
+                border: 1px solid var(--dc-stroke);
+                background: var(--dc-surface);
+                color: var(--dc-text);
+                height: 34px;
+                outline: 0;
+            }
+            .row-index {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                border: 1px solid var(--dc-stroke);
+                background: rgba(88, 101, 242, 0.15);
+                color: #cfd3ff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 800;
+                font-size: 12px;
+                flex: none;
+            }
+            .bottom-actions-row {
+                display: flex;
+                gap: 10px;
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="wrap">
+            <header class="header">
+                <img
+                    src="https://blogger.googleusercontent.com/img/a/AVvXsEhhJrYv5OzuQ6bPTyBcgu_1MpmoPAgyLf__EGK5YGZQmQnOSVFxaY0xrWCdfmKX2bzsnyqNmKQF7Js0BJhf92K8wtYcB_voF6zJi25jlXGIkh81KylJV7K9N4S5a9ySywGhOqOtAtGI0yUw5wxztMUUswTrj9_vy0HI66n5H6KieOItjPXMIPFbJOrtmPnY"
+                    alt="Logo"
+                    style="width: 180px; border-radius: 0; margin: 0 auto 4px"
+                />
+                <p>Generator Link & Pesan Undangan</p>
+            </header>
 
-/* ===== Toast/Modal ===== */
-.modal{ position:fixed;inset:0;display:none;place-items:center;z-index:99; background:rgba(0,0,0,.6);backdrop-filter:blur(2px);}
-.modal.show{display:grid;animation:fade .2s}
-.modal-card{ background:#1e1f22; color:#f2f3f5; padding:20px; border:1px solid #3f4247; border-radius:16px;width:min(400px,90vw); text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.4);}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+            <section class="config-box">
+                <div class="section-title">
+                    <span>⚙️ Pengaturan Undangan</span>
+                </div>
 
-/* Light Mode */
-html.light body{background:var(--dcL-bg);color:var(--dcL-text)}
-html.light .card, html.light .item {background:var(--dcL-bg-soft);border-color:var(--dcL-stroke)}
-html.light .item-head{background:#f9fafb;border-bottom-color:var(--dcL-stroke)}
-html.light .item-name{color:var(--dcL-text)}
-html.light .inp-text, html.light .inp-select, html.light textarea, html.light select, html.light .msg-preview{ background:var(--dcL-surface); color:var(--dcL-text); border-color:var(--dcL-stroke);}
-html.light .header p, html.light .control-row label{color:var(--dcL-muted)}
-html.light .badge-slug{background:#eef2ff;color:#4450db}
-html.light .input-row { background:var(--dcL-bg); border-color:var(--dcL-stroke); }
-html.light .btn-icon-danger { background:var(--dcL-surface); border-color:var(--dcL-stroke); }
-html.light .modal-card{background:#fff;color:#000;border-color:#e5e7eb}
+                <div class="config-grid">
+                    <div class="config-group">
+                        <label>Slug / Link</label>
+                        <input
+                            type="text"
+                            id="configSlug"
+                            class="config-input"
+                            placeholder="contoh: fulan-fulanah"
+                        />
+                        <span class="config-hint"
+                            >Link: undangannya.web.id/<b id="slugPreview"
+                                >...</b
+                            ></span
+                        >
+                    </div>
+                    <div class="config-group">
+                        <label>Judul / Nama Pasangan</label>
+                        <input
+                            type="text"
+                            id="configTitle"
+                            class="config-input"
+                            placeholder="contoh: Fulan & Fulanah"
+                        />
+                        <span class="config-hint"
+                            >Untuk judul di dalam pesan WA.</span
+                        >
+                    </div>
+                </div>
 
-/* Theme Switcher */
-.theme-switch{position:fixed;bottom:20px;right:20px;z-index:80}
-.btn-theme{background:var(--dc-surface);color:#fff;border:1px solid var(--dc-stroke);border-radius:50px;width:40px;height:40px;font-size:18px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.3)}
-html.light .btn-theme{background:#fff;color:#000;border-color:#e5e7eb}
+                <button
+                    id="saveConfigBtn"
+                    class="btn btn-secondary"
+                    style="width: 100%"
+                    type="button"
+                >
+                    💾 Simpan Info
+                </button>
 
-/* ===== Bulk Controls (kotak merah) ===== */
-.bulk-controls{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-.bulk-controls .bulk-btn{
-  width:34px;height:34px;
-  border-radius:10px;
-  border:1px solid var(--dc-stroke);
-  background:var(--dc-surface);
-  color:var(--dc-text);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-}
-.bulk-controls .bulk-btn:hover{ border-color:var(--dc-muted); }
-.bulk-controls .bulk-input{
-  width:70px;
-  text-align:center;
-  padding:8px 10px;
-  border-radius:10px;
-  border:1px solid var(--dc-stroke);
-  background:var(--dc-surface);
-  color:var(--dc-text);
-  height:34px;
-  outline:0;
-}
-.bulk-controls small{
-  color:var(--dc-muted);
-  font-weight:600;
-  font-size:12px;
-}
+                <div style="margin-top: 10px; text-align: center">
+                    <button
+                        id="togglePreviewBtn"
+                        class="btn btn-outline"
+                        style="width: 100%; font-size: 12px; padding: 8px"
+                    >
+                        👁️ Tampilkan/Sembunyikan Contoh Pesan
+                    </button>
+                </div>
 
-/* ===== Row Number (kotak biru) ===== */
-.row-index{
-  width:28px; height:28px;
-  border-radius:8px;
-  border:1px solid var(--dc-stroke);
-  background:rgba(88,101,242,.15);
-  color:#cfd3ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  font-size:12px;
-  flex:none;
-}
+                <div id="livePreviewBox" class="preview-box">
+                    <div class="preview-title">
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                            />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        Contoh Hasil (Preview)
+                    </div>
+                    <p
+                        style="
+                            margin: 0 0 8px;
+                            font-size: 12px;
+                            color: var(--dc-text);
+                        "
+                    >
+                        Jika link & nama di bawah ini sudah benar, silakan
+                        lanjut isi data tamu.
+                    </p>
+                    <div class="preview-content" id="previewTextContent"></div>
+                </div>
+            </section>
 
-/* ===== Bottom actions row (Clear + Export) ===== */
-.bottom-actions-row{
-  display:flex;
-  gap:10px;
-  margin-top:30px;
-}
-</style>
-</head>
+            <section class="card">
+                <div class="section-title">
+                    <span>📝 Data Tamu</span>
+                    <div class="bulk-controls">
+                        <button
+                            id="bulkMinus"
+                            class="bulk-btn"
+                            type="button"
+                            title="Kurangi baris"
+                        >
+                            −
+                        </button>
+                        <input
+                            id="bulkCount"
+                            class="bulk-input"
+                            type="number"
+                            min="1"
+                            max="50"
+                            value="1"
+                        />
+                        <button
+                            id="bulkPlus"
+                            class="bulk-btn"
+                            type="button"
+                            title="Tambah baris"
+                        >
+                            +
+                        </button>
+                        <button
+                            id="addOneBtn"
+                            class="btn btn-outline"
+                            style="
+                                font-size: 11px;
+                                padding: 6px 12px;
+                                width: auto;
+                                flex: none;
+                            "
+                        >
+                            + Tambah
+                        </button>
+                    </div>
+                </div>
 
-<body>
-<main class="wrap">
-  <header class="header">
-    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjk8SNB-OGiqfL3WA6MfxFAUWRMC07PNG3JVKTIiwN71sf4ZvfhlURCQxIEhBKv_BBXTLLAejbEbM6JCHqzBRdsw1TCi8XdTGfqB2-QUwpe14MqRR52YUHIhsuhH0tysjGiwsdElnSbSjRz8cfbb-UEMFZlqAReoXuFGN-aaoS1m3aBt4JhnNIFI79a8KSk"
-         alt="Logo" style="width:80px;border-radius:16px;margin:0 auto 12px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
-    <h1>Undangan Pernikahan</h1>
-    <div><span class="badge-slug">Slug: tania-bayu</span></div>
-    <p>Masukkan data tamu, pilih WA / WA GRUP / IG / Lainnya.</p>
-  </header>
+                <div id="inputContainer" class="input-container"></div>
 
-  <section class="card">
-    <div class="section-title">
-      <span>📝 Data Tamu</span>
+                <div class="actions">
+                    <button
+                        id="processBtn"
+                        class="btn btn-primary"
+                        type="button"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Generate Undangan
+                    </button>
+                </div>
+            </section>
 
-      <!-- Kotak merah: bulk controls -->
-      <div class="bulk-controls">
-        <button id="bulkMinus" class="bulk-btn" type="button" title="Kurangi baris">−</button>
-        <input id="bulkCount" class="bulk-input" type="number" min="1" max="50" value="1" />
-        <button id="bulkPlus" class="bulk-btn" type="button" title="Tambah baris">+</button>
-        <small>/ max 50</small>
+            <div id="list" class="list"></div>
 
-        <!-- tombol tambah 1 (opsional) -->
-        <button id="addOneBtn" class="btn btn-outline" style="font-size:11px; padding:6px 12px; width:auto; flex:none;">+ Tambah</button>
-      </div>
-    </div>
+            <div id="bottomAction" style="display: none">
+                <div class="bottom-actions-row">
+                    <button
+                        id="exportCsvBtn"
+                        class="btn btn-outline"
+                        type="button"
+                    >
+                        Export CSV
+                    </button>
+                    <button
+                        id="clearAllBtn"
+                        class="btn btn-block-danger"
+                        type="button"
+                    >
+                        Hapus Semua
+                    </button>
+                </div>
+            </div>
+        </main>
 
-    <div id="inputContainer" class="input-container"></div>
+        <div id="modal" class="modal">
+            <div class="modal-card">
+                <h3 id="modalTitle" style="margin: 0 0 8px">Info</h3>
+                <p
+                    id="modalDesc"
+                    style="margin: 0 0 16px; font-size: 14px; opacity: 0.8"
+                >
+                    Pesan
+                </p>
+                <button
+                    onclick="
+                        document
+                            .getElementById('modal')
+                            .classList.remove('show')
+                    "
+                    class="btn btn-primary"
+                    style="width: 100%"
+                    type="button"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
 
-    <div class="actions">
-      <button id="processBtn" class="btn btn-primary" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        Generate Undangan
-      </button>
-    </div>
-  </section>
+        <div class="theme-switch">
+            <button id="themeToggle" class="btn-theme" type="button">🌙</button>
+        </div>
 
-  <div id="list" class="list"></div>
+        <script>
+            (function () {
+                const $ = (s) => document.querySelector(s);
 
-  <div id="bottomAction" style="display:none">
-    <div class="bottom-actions-row">
-      <button id="exportCsvBtn" class="btn btn-outline" type="button">Export CSV</button>
+                // --- CONFIG ---
+                const BASE_URL = "https://undangannya.web.id/";
+                const MAX_ROWS = 50;
+                const STORAGE_KEY = "inv_v1_config";
 
-      <button id="clearAllBtn" class="btn btn-block-danger" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;margin-right:6px">
-          <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-        </svg>
-        Hapus Semua Data
-      </button>
-    </div>
-  </div>
-</main>
+                // --- STATE ---
+                let items = [];
+                const listEl = $("#list");
+                const container = $("#inputContainer");
+                const modal = $("#modal");
+                const bottomAction = $("#bottomAction");
 
-<div id="modal" class="modal">
-  <div class="modal-card">
-    <h3 id="modalTitle" style="margin:0 0 8px">Info</h3>
-    <p id="modalDesc" style="margin:0 0 16px;font-size:14px;opacity:0.8">Pesan</p>
-    <button onclick="document.getElementById('modal').classList.remove('show')" class="btn btn-primary" style="width:100%" type="button">OK</button>
-  </div>
-</div>
+                // Config Elements
+                const slugInput = $("#configSlug");
+                const titleInput = $("#configTitle");
+                const slugPreview = $("#slugPreview");
+                const saveBtn = $("#saveConfigBtn");
+                const previewBox = $("#livePreviewBox");
+                const previewText = $("#previewTextContent");
+                const togglePreviewBtn = $("#togglePreviewBtn");
 
-<div class="theme-switch"><button id="themeToggle" class="btn-theme" type="button">🌙</button></div>
+                // --- TEMPLATES UPDATED ---
+                const TEMPLATES = [
+                    {
+                        key: "v1",
+                        label: "Versi 1 (Standard)",
+                        build: (to, slug, title) => {
+                            const link = `${BASE_URL}${slug}/?to=${encodeURIComponent(to).replace(/%20/g, "+")}`;
+                            return `Assalamu'alaikum Wr. Wb\n*${to}*\n\nBismillahirrohmanirrohim.\nThe Wedding Of ${title}\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i sekalian, untuk menghadiri acara pernikahan kami,\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n\n${link}\n\nUngkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇\n\nWassalamu’alaikum Wr. Wb\nHormat kami yg berbahagia,\n${title}`;
+                        },
+                    },
+                    {
+                        key: "v2",
+                        label: "Versi 2 (Dengan Doa)",
+                        build: (to, slug, title) => {
+                            const link = `${BASE_URL}${slug}/?to=${encodeURIComponent(to).replace(/%20/g, "+")}`;
+                            return `Assalamu'alaikum Wr. Wb\n\n*${to}*\n\nBismillahirrohmanirrohim.\n*The Wedding Of ${title}*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i sekalian, untuk menghadiri acara pernikahan kami,\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n${link}\n\nUngkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Wr. Wb.\n\nHormat kami yg berbahagia,\n${title}`;
+                        },
+                    },
+                    {
+                        key: "v3",
+                        label: "Versi 3 (Yth & Formal)",
+                        build: (to, slug, title) => {
+                            const link = `${BASE_URL}${slug}/?to=${encodeURIComponent(to).replace(/%20/g, "+")}`;
+                            return `Assalamu'alaikum Wr. Wb\nYth. *${to}*\n\nBismillahirrohmanirrohim.\nThe Wedding Of ${title}\n\nDengan ini kami bermaksud menyampaikan undangan pernikahan kami kepada Bapak/Ibu/Saudara/i sekalian.\n\nDetail waktu, tempat, dan informasi lengkap terdapat pada Undangan Online berikut:\n\n${link}\n\nAtas kehadiran serta doa restunya, kami ucapkan terima kasih.\n\nWassalamu’alaikum Wr. Wb\nHormat kami yg berbahagia,\n${title}`;
+                        },
+                    },
+                ];
 
-<script>
-(function(){
-  const $ = (s)=>document.querySelector(s);
+                // --- HELPERS ---
+                const showModal = (title, desc) => {
+                    $("#modalTitle").textContent = title;
+                    $("#modalDesc").textContent = desc;
+                    modal.classList.add("show");
+                };
+                const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
-  // --- CONFIG ---
-  const FIXED_SLUG = "tania-bayu";
-  const BASE_URL = "https://undangannya.web.id/";
-  const MAX_ROWS = 50;
+                // --- CONFIG & THEME LOGIC ---
+                const loadConfig = () => {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        slugInput.value = data.slug || "";
+                        titleInput.value = data.title || "";
+                        updateSlugPreview(data.slug || "");
+                        if (data.slug && data.title)
+                            updatePreviewText(data.slug, data.title);
+                    }
+                };
 
-  // --- TEMPLATES ---
-  const TEMPLATES = [
-    {
-      key: 'tania', label: 'Versi Tania',
-      build: (to) => {
-        const link = `${BASE_URL}${FIXED_SLUG}/?to=${encodeURIComponent(to).replace(/%20/g,'+')}`;
-        return `Assalamu'alaikum Wr. Wb\n\n*${to}*\n\nBismillahirrohmanirrohim.\n*The Wedding Of Tania & Bayu*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i sekalian, untuk menghadiri acara pernikahan kami,\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n${link}\n\nUngkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Wr. Wb.\n\nHormat kami yg berbahagia,\nTania & Bayu`;
-      }
-    },
-    {
-      key: 'bayu', label: 'Versi Bayu',
-      build: (to) => {
-        const link = `${BASE_URL}${FIXED_SLUG}/?to=${encodeURIComponent(to).replace(/%20/g,'+')}`;
-        return `Assalamu'alaikum Wr. Wb\n\n*${to}*\nBismillahirrohmanirrohim.\n*The Wedding Of Bayu & Tania*\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i sekalian, untuk menghadiri acara pernikahan kami,\n\nBerikut link website Undangan Online-nya, untuk informasi lebih lengkap dari acara kami :\n${link}\n\nUngkapan syukur & terima kasih yang tulus dari kami apabila Bapak/Ibu dan teman teman berkenan hadir dalam acara pernikahan kami dan memberikan doa restu 😇\n\n_Alhamdulillahi Jaza Kumullahu Khoiro,_\nWassalamu’alaikum Warohamtullahi Wabarokatuh.\n\nHormat kami yg berbahagia,\nBayu & Tania`;
-      }
-    }
-  ];
+                const saveConfig = () => {
+                    const s = slugInput.value.trim();
+                    const t = titleInput.value.trim();
+                    if (!s || !t)
+                        return showModal(
+                            "Error",
+                            "Isi Slug dan Nama Pasangan dulu.",
+                        );
 
-  // --- STATE ---
-  let items = [];
-  const listEl = $('#list');
-  const container = $('#inputContainer');
-  const modal = $('#modal');
-  const bottomAction = $('#bottomAction');
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify({ slug: s, title: t }),
+                    );
+                    updatePreviewText(s, t);
 
-  // --- HELPERS ---
-  const showModal = (title, desc) => {
-    $('#modalTitle').textContent = title;
-    $('#modalDesc').textContent = desc;
-    modal.classList.add('show');
-  };
+                    const oldText = saveBtn.textContent;
+                    saveBtn.textContent = "✅ Tersimpan!";
+                    saveBtn.style.background = "var(--dc-wa)";
+                    saveBtn.style.color = "#fff";
+                    setTimeout(() => {
+                        saveBtn.textContent = oldText;
+                        saveBtn.style.background = "";
+                        saveBtn.style.color = "";
+                    }, 1500);
+                };
 
-  const copyText = async (text) => {
-    try { await navigator.clipboard.writeText(text); return true; }
-    catch { return false; }
-  };
+                const updateSlugPreview = (val) => {
+                    let clean = val
+                        .toLowerCase()
+                        .replace(/[^a-z0-9-]/g, "-")
+                        .replace(/-+/g, "-");
+                    slugInput.value = clean;
+                    slugPreview.textContent = clean || "...";
+                };
 
-  const cleanPhone = (p) => {
-    let n = (p||'').replace(/\D/g,'');
-    if(n.startsWith('0')) return '62' + n.substring(1);
-    if(n.startsWith('8')) return '62' + n;
-    return n;
-  };
+                const updatePreviewText = (s, t) => {
+                    // Generate dummy text
+                    const dummyMsg = TEMPLATES[0].build("Nama Tamu", s, t);
+                    previewText.textContent = dummyMsg;
+                };
 
-  const cleanIG = (u) => (u||'').replace('@','').trim();
+                // Toggle Preview Logic
+                togglePreviewBtn.addEventListener("click", () => {
+                    if (previewBox.classList.contains("show")) {
+                        previewBox.classList.remove("show");
+                    } else {
+                        previewBox.classList.add("show");
+                        // Update content just in case
+                        const s = slugInput.value.trim();
+                        const t = titleInput.value.trim();
+                        if (s && t) updatePreviewText(s, t);
+                    }
+                });
 
-  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+                slugInput.addEventListener("input", (e) =>
+                    updateSlugPreview(e.target.value),
+                );
+                saveBtn.addEventListener("click", saveConfig);
 
-  const updateRowNumbers = () => {
-    const rows = container.querySelectorAll('.input-row');
-    rows.forEach((row, i) => {
-      const el = row.querySelector('.row-index');
-      if(el) el.textContent = (i + 1);
-    });
-    const bulkCountEl = $('#bulkCount');
-    if(bulkCountEl) bulkCountEl.value = rows.length;
-  };
+                // --- INPUT ROW (VISUAL SELECTOR) ---
+                const createInputRow = () => {
+                    if (
+                        container.querySelectorAll(".input-row").length >=
+                        MAX_ROWS
+                    )
+                        return showModal("Full", "Maks 50 baris.");
 
-  const setRowCount = (count) => {
-    let target = clamp(parseInt(count || 1, 10), 1, MAX_ROWS);
-    const current = container.querySelectorAll('.input-row').length;
-
-    if(target > current){
-      for(let i = 0; i < (target - current); i++){
-        createInputRow();
-      }
-    } else if(target < current){
-      for(let i = current; i > target; i--){
-        container.lastElementChild?.remove();
-      }
-    }
-
-    // jaga jangan sampai kosong
-    if(container.querySelectorAll('.input-row').length === 0){
-      createInputRow();
-    }
-
-    updateRowNumbers();
-  };
-
-  // --- INPUT ROW LOGIC ---
-  const createInputRow = () => {
-    if(container.querySelectorAll('.input-row').length >= MAX_ROWS){
-      showModal('Batas Maksimal', `Maksimal ${MAX_ROWS} data tamu.`);
-      return;
-    }
-
-    const div = document.createElement('div');
-    div.className = 'input-row';
-    div.innerHTML = `
+                    const div = document.createElement("div");
+                    div.className = "input-row";
+                    div.innerHTML = `
       <div class="row-index">1</div>
-
       <input type="text" class="inp-text inp-name" placeholder="Nama Tamu" required>
-      <button class="btn-icon-danger" title="Hapus Baris" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
+
+      <div class="type-selector">
+        <div class="type-btn active" data-type="other">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Salin Aja
+        </div>
+        <div class="type-btn" data-type="wa">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            WA
+        </div>
+        <div class="type-btn" data-type="wa_group">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Grup
+        </div>
+        <div class="type-btn" data-type="ig">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            IG
+        </div>
+      </div>
+      <input type="hidden" class="inp-type-val" value="other">
+
+      <input type="text" class="inp-text inp-contact" placeholder="Tdk perlu diisi" disabled>
+
+      <button class="btn-icon-danger" title="Hapus" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
-
-      <select class="inp-select inp-type">
-        <option value="wa">WA</option>
-        <option value="wa_group">WA GRUP</option>
-        <option value="ig">IG</option>
-        <option value="other">Lainnya</option>
-      </select>
-
-      <input type="text" class="inp-text inp-contact" placeholder="No. WA (08xx)">
     `;
 
-    // Remove handler
-    div.querySelector('.btn-icon-danger').onclick = () => {
-      div.remove();
-      if(container.querySelectorAll('.input-row').length === 0) createInputRow();
-      updateRowNumbers();
-    };
+                    const btns = div.querySelectorAll(".type-btn");
+                    const hiddenInp = div.querySelector(".inp-type-val");
+                    const contactInp = div.querySelector(".inp-contact");
 
-    // Placeholder & disable logic
-    const sel = div.querySelector('.inp-type');
-    const inpC = div.querySelector('.inp-contact');
-    sel.onchange = () => {
-      const v = sel.value;
-      if(v === 'wa'){
-        inpC.disabled = false;
-        inpC.placeholder = 'No. WA (08xx)';
-      } else if(v === 'ig'){
-        inpC.disabled = false;
-        inpC.placeholder = 'Username IG';
-      } else if(v === 'wa_group'){
-        inpC.value = '';
-        inpC.disabled = true;
-        inpC.placeholder = 'Pilih grup langsung di WhatsApp';
-      } else { // other
-        inpC.value = '';
-        inpC.disabled = true;
-        inpC.placeholder = 'Copy saja (tanpa kirim otomatis)';
-      }
-    };
-    sel.onchange(); // init
+                    btns.forEach((btn) => {
+                        btn.addEventListener("click", () => {
+                            btns.forEach((b) => b.classList.remove("active"));
+                            btn.classList.add("active");
+                            const type = btn.dataset.type;
+                            hiddenInp.value = type;
 
-    container.appendChild(div);
-    updateRowNumbers();
-  };
+                            if (type === "other" || type === "wa_group") {
+                                contactInp.value = "";
+                                contactInp.disabled = true;
+                                contactInp.placeholder =
+                                    type === "other"
+                                        ? "Tdk perlu diisi"
+                                        : "Pilih Grup di WA";
+                            } else if (type === "wa") {
+                                contactInp.disabled = false;
+                                contactInp.placeholder = "No. WA (08xx)";
+                                contactInp.focus();
+                            } else if (type === "ig") {
+                                contactInp.disabled = false;
+                                contactInp.placeholder = "Username IG";
+                                contactInp.focus();
+                            }
+                        });
+                    });
 
-  // --- RENDER CARD LOGIC ---
-  const render = () => {
-    listEl.innerHTML = '';
+                    div.querySelector(".btn-icon-danger").onclick = () => {
+                        div.remove();
+                        if (
+                            container.querySelectorAll(".input-row").length ===
+                            0
+                        )
+                            createInputRow();
+                        updateRowNumbers();
+                    };
 
-    if(items.length === 0){
-      bottomAction.style.display = 'none';
-      listEl.innerHTML = '<div style="text-align:center;color:var(--dc-muted);font-size:14px;padding:20px;">Hasil generate akan muncul di sini.</div>';
-      return;
-    }
-    bottomAction.style.display = 'block';
+                    container.appendChild(div);
+                    updateRowNumbers();
+                };
 
-    const badgeMap = { wa:'bg-wa', wa_group:'bg-wag', ig:'bg-ig', other:'bg-oth' };
-    const badgeLabelMap = { wa:'WA', wa_group:'WA GRUP', ig:'IG', other:'LAINNYA' };
+                const updateRowNumbers = () => {
+                    const rows = container.querySelectorAll(".input-row");
+                    rows.forEach((row, i) => {
+                        row.querySelector(".row-index").textContent = i + 1;
+                    });
+                    $("#bulkCount").value = rows.length;
+                };
 
-    items.forEach((item, idx) => {
-      const el = document.createElement('div'); el.className = 'item';
+                const setRowCount = (count) => {
+                    let target = clamp(parseInt(count || 1, 10), 1, MAX_ROWS);
+                    const current =
+                        container.querySelectorAll(".input-row").length;
+                    if (target > current)
+                        for (let i = 0; i < target - current; i++)
+                            createInputRow();
+                    else if (target < current)
+                        for (let i = current; i > target; i--)
+                            container.lastElementChild?.remove();
+                    if (container.querySelectorAll(".input-row").length === 0)
+                        createInputRow();
+                    updateRowNumbers();
+                };
 
-      // Header
-      const head = document.createElement('div'); head.className = 'item-head';
-      const badgeClass = badgeMap[item.type] || 'bg-oth';
-      const badgeLabel = badgeLabelMap[item.type] || (item.type||'').toUpperCase();
+                const render = () => {
+                    listEl.innerHTML = "";
+                    const s = slugInput.value.trim();
+                    const t = titleInput.value.trim();
 
-      head.innerHTML = `
-        <span class="item-name">
-          ${idx + 1}. ${item.name}
-          <span class="badge-contact ${badgeClass}">${badgeLabel}</span>
-        </span>
-      `;
+                    if (items.length === 0) {
+                        bottomAction.style.display = "none";
+                        listEl.innerHTML =
+                            '<div style="text-align:center;color:var(--dc-muted);font-size:14px;padding:20px;">Hasil generate muncul di sini.</div>';
+                        return;
+                    }
+                    bottomAction.style.display = "block";
 
-      const delBtn = document.createElement('button');
-      delBtn.className = 'btn-icon-danger';
-      delBtn.type = 'button';
-      delBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
-      delBtn.onclick = () => { items.splice(idx,1); render(); };
-      head.appendChild(delBtn);
+                    const badgeMap = {
+                        wa: "bg-wa",
+                        wa_group: "bg-wag",
+                        ig: "bg-ig",
+                        other: "bg-oth",
+                    };
+                    const badgeLabelMap = {
+                        wa: "WA",
+                        wa_group: "WA GRUP",
+                        ig: "IG",
+                        other: "COPY AJA",
+                    };
 
-      // Body
-      const body = document.createElement('div'); body.className = 'item-body';
+                    items.forEach((item, idx) => {
+                        const el = document.createElement("div");
+                        el.className = "item";
+                        const head = document.createElement("div");
+                        head.className = "item-head";
+                        const bClass = badgeMap[item.type] || "bg-oth";
+                        const bLabel = badgeLabelMap[item.type] || "OTHER";
 
-      // Version Select
-      const ctrl = document.createElement('div'); ctrl.className = 'control-row';
-      const sel = document.createElement('select'); sel.className = 'version-select';
-      sel.innerHTML = TEMPLATES.map(t => `<option value="${t.key}">${t.label}</option>`).join('');
-      sel.value = item.version;
-      ctrl.appendChild(document.createTextNode('Versi: ')); ctrl.appendChild(sel);
+                        head.innerHTML = `<span class="item-name">${idx + 1}. ${item.name} <span class="badge-contact ${bClass}">${bLabel}</span></span>`;
 
-      // Textarea Preview
-      const area = document.createElement('textarea'); area.className = 'msg-preview';
-      const updateMsg = () => {
-        item.version = sel.value;
-        const tmpl = TEMPLATES.find(t => t.key === item.version) || TEMPLATES[0];
-        area.value = tmpl.build(item.name);
-      };
-      sel.addEventListener('change', updateMsg);
-      updateMsg();
+                        const delBtn = document.createElement("button");
+                        delBtn.className = "btn-icon-danger";
+                        delBtn.type = "button";
+                        delBtn.innerHTML =
+                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+                        delBtn.onclick = () => {
+                            items.splice(idx, 1);
+                            render();
+                        };
+                        head.appendChild(delBtn);
 
-      // Actions Buttons
-      const actions = document.createElement('div'); actions.className = 'actions';
+                        const body = document.createElement("div");
+                        body.className = "item-body";
 
-      // Copy Button (selalu ada)
-      const copyBtn = document.createElement('button'); copyBtn.className = 'btn btn-copy';
-      copyBtn.type = 'button';
-      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
-      copyBtn.style.flex = "0 0 auto";
-      copyBtn.onclick = async () => {
-        const ok = await copyText(area.value);
-        showModal(ok ? 'Disalin' : 'Gagal', ok ? 'Pesan disalin.' : 'Izin clipboard ditolak.');
-      };
+                        const ctrl = document.createElement("div");
+                        ctrl.className = "control-row";
+                        const sel = document.createElement("select");
+                        sel.className = "version-select";
+                        sel.innerHTML = TEMPLATES.map(
+                            (tmp) =>
+                                `<option value="${tmp.key}">${tmp.label}</option>`,
+                        ).join("");
+                        sel.value = item.version;
+                        ctrl.append(document.createTextNode("Versi: "), sel);
 
-      // Send Button (tergantung tipe)
-      const sendBtn = document.createElement('button');
-      sendBtn.type = 'button';
+                        const area = document.createElement("textarea");
+                        area.className = "msg-preview";
+                        const updateMsg = () => {
+                            item.version = sel.value;
+                            const tmpl =
+                                TEMPLATES.find((x) => x.key === item.version) ||
+                                TEMPLATES[0];
+                            area.value = tmpl.build(item.name, s, t);
+                        };
+                        sel.addEventListener("change", updateMsg);
+                        updateMsg();
 
-      if(item.type === 'wa') {
-        sendBtn.className = 'btn btn-whatsapp';
-        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Kirim WA';
-        sendBtn.onclick = () => {
-          const phone = cleanPhone(item.contact || '');
-          if(phone.length < 5) return showModal('Error', 'Nomor WA tidak valid.');
-          window.open(`https://wa.me/${phone}?text=${encodeURIComponent(area.value)}`, '_blank');
-        };
+                        const actions = document.createElement("div");
+                        actions.className = "actions";
 
-      } else if(item.type === 'wa_group') {
-        sendBtn.className = 'btn btn-whatsapp';
-        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Pilih Grup WA';
-        sendBtn.onclick = () => {
-          window.open(`https://wa.me/?text=${encodeURIComponent(area.value)}`, '_blank');
-        };
+                        const copyBtn = document.createElement("button");
+                        copyBtn.className = "btn btn-copy";
+                        copyBtn.type = "button";
+                        copyBtn.innerHTML =
+                            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+                        copyBtn.style.flex = "0 0 auto";
+                        copyBtn.onclick = async () => {
+                            const ok = await navigator.clipboard
+                                .writeText(area.value)
+                                .then(() => true)
+                                .catch(() => false);
+                            showModal(
+                                ok ? "Disalin" : "Gagal",
+                                ok
+                                    ? "Pesan berhasil disalin."
+                                    : "Gagal menyalin.",
+                            );
+                        };
+                        actions.append(copyBtn);
 
-      } else if(item.type === 'ig') {
-        sendBtn.className = 'btn btn-instagram';
-        sendBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Copy & Buka IG';
-        sendBtn.onclick = async () => {
-          if(!item.contact) return showModal('Error', 'Username IG kosong.');
-          await copyText(area.value);
-          window.open(`https://instagram.com/${cleanIG(item.contact)}`, '_blank');
-        };
+                        if (item.type !== "other") {
+                            const sendBtn = document.createElement("button");
+                            sendBtn.type = "button";
+                            if (item.type === "wa") {
+                                sendBtn.className = "btn btn-whatsapp";
+                                sendBtn.innerHTML =
+                                    '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg> Kirim WA';
+                                sendBtn.onclick = () => {
+                                    let p = (item.contact || "").replace(
+                                        /\D/g,
+                                        "",
+                                    );
+                                    if (p.startsWith("0"))
+                                        p = "62" + p.substring(1);
+                                    if (p.length < 5)
+                                        return showModal(
+                                            "Error",
+                                            "Nomor WA tidak valid.",
+                                        );
+                                    window.open(
+                                        `https://wa.me/${p}?text=${encodeURIComponent(area.value)}`,
+                                        "_blank",
+                                    );
+                                };
+                            } else if (item.type === "wa_group") {
+                                sendBtn.className = "btn btn-whatsapp";
+                                sendBtn.innerHTML = "Pilih Grup WA";
+                                sendBtn.onclick = () =>
+                                    window.open(
+                                        `https://wa.me/?text=${encodeURIComponent(area.value)}`,
+                                        "_blank",
+                                    );
+                            } else if (item.type === "ig") {
+                                sendBtn.className = "btn btn-instagram";
+                                sendBtn.innerHTML = "Buka IG";
+                                sendBtn.onclick = () => {
+                                    if (!item.contact)
+                                        return showModal(
+                                            "Error",
+                                            "Username IG kosong.",
+                                        );
+                                    navigator.clipboard.writeText(area.value);
+                                    window.open(
+                                        `https://instagram.com/${item.contact.replace("@", "")}`,
+                                        "_blank",
+                                    );
+                                };
+                            }
+                            actions.append(sendBtn);
+                        }
 
-      } else {
-        sendBtn.className = 'btn btn-outline';
-        sendBtn.textContent = 'Tidak ada kirim';
-        sendBtn.onclick = () => showModal('Info', 'Untuk "Lainnya", pesan hanya bisa di-copy.');
-      }
+                        body.append(ctrl, area, actions);
+                        el.append(head, body);
+                        listEl.appendChild(el);
+                    });
+                };
 
-      if(item.type === 'other'){
-        actions.append(copyBtn);
-      } else {
-        actions.append(copyBtn, sendBtn);
-      }
+                $("#addOneBtn").addEventListener("click", () => {
+                    createInputRow();
+                    updateRowNumbers();
+                });
+                $("#bulkPlus").addEventListener("click", () =>
+                    setRowCount(
+                        container.querySelectorAll(".input-row").length + 1,
+                    ),
+                );
+                $("#bulkMinus").addEventListener("click", () =>
+                    setRowCount(
+                        container.querySelectorAll(".input-row").length - 1,
+                    ),
+                );
+                $("#bulkCount").addEventListener("input", (e) =>
+                    setRowCount(e.target.value),
+                );
 
-      body.append(ctrl, area, actions);
-      el.append(head, body);
-      listEl.appendChild(el);
-    });
-  };
+                $("#processBtn").addEventListener("click", () => {
+                    if (!slugInput.value || !titleInput.value)
+                        return showModal(
+                            "Info",
+                            "Harap simpan konfigurasi slug & nama dulu.",
+                        );
 
-  // --- EXPORT CSV ---
-  const exportCSV = () => {
-    if(items.length === 0){
-      return showModal('Kosong', 'Belum ada data yang bisa di-export.');
-    }
+                    const rows = container.querySelectorAll(".input-row");
+                    if (rows.length === 0)
+                        return showModal("Kosong", "Belum ada data tamu.");
 
-    const header = ['no','nama','tipe','kontak','versi','link'];
-    const rows = items.map((it, i) => {
-      const link = `${BASE_URL}${FIXED_SLUG}/?to=${encodeURIComponent(it.name).replace(/%20/g,'+')}`;
-      const safe = (v) => `"${String(v ?? '').replace(/"/g,'""')}"`;
-      return [
-        i+1,
-        it.name,
-        it.type,
-        it.contact || '',
-        it.version || '',
-        link
-      ].map(safe).join(',');
-    });
+                    let added = 0;
+                    rows.forEach((row) => {
+                        if (items.length >= MAX_ROWS) return;
+                        const name = row
+                            .querySelector(".inp-name")
+                            .value.trim();
+                        const type = row.querySelector(".inp-type-val").value;
+                        const contact = (
+                            row.querySelector(".inp-contact").value || ""
+                        ).trim();
 
-    const csv = header.join(',') + '\n' + rows.join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
+                        if (!name) return;
+                        if ((type === "wa" || type === "ig") && !contact)
+                            return;
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `data-tamu-${FIXED_SLUG}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  };
+                        items.push({ name, type, contact, version: "v1" });
+                        added++;
+                    });
 
-  // --- EVENTS ---
-  $('#addOneBtn').addEventListener('click', () => {
-    createInputRow();
-    updateRowNumbers();
-  });
+                    if (added > 0) {
+                        container.innerHTML = "";
+                        setRowCount($("#bulkCount").value);
+                        render();
+                    } else {
+                        showModal(
+                            "Cek Data",
+                            "Pastikan nama tamu terisi (dan kontak jika memilih WA/IG).",
+                        );
+                    }
+                });
 
-  // Bulk controls
-  $('#bulkPlus').addEventListener('click', () => {
-    const cur = container.querySelectorAll('.input-row').length;
-    setRowCount(cur + 1);
-  });
+                $("#clearAllBtn").addEventListener("click", () => {
+                    if (confirm("Hapus semua?")) {
+                        items = [];
+                        render();
+                    }
+                });
+                $("#exportCsvBtn").addEventListener("click", () => {
+                    if (items.length === 0)
+                        return showModal("Kosong", "Data kosong.");
+                    const header = [
+                        "no",
+                        "nama",
+                        "tipe",
+                        "kontak",
+                        "versi",
+                        "link",
+                    ];
+                    const rows = items.map((it, i) => {
+                        const link = `${BASE_URL}${slugInput.value.trim()}/?to=${encodeURIComponent(it.name)}`;
+                        return [
+                            i + 1,
+                            it.name,
+                            it.type,
+                            it.contact || "",
+                            it.version || "",
+                            link,
+                        ]
+                            .map((v) => `"${v}"`)
+                            .join(",");
+                    });
+                    const blob = new Blob(
+                        [header.join(",") + "\n" + rows.join("\n")],
+                        { type: "text/csv" },
+                    );
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `tamu-${slugInput.value.trim()}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                });
 
-  $('#bulkMinus').addEventListener('click', () => {
-    const cur = container.querySelectorAll('.input-row').length;
-    setRowCount(cur - 1);
-  });
+                loadConfig();
+                setRowCount(1);
 
-  $('#bulkCount').addEventListener('input', (e) => {
-    setRowCount(e.target.value);
-  });
-
-  $('#processBtn').addEventListener('click', () => {
-    const rows = container.querySelectorAll('.input-row');
-    if(rows.length === 0) return showModal('Kosong', 'Tambahkan baris tamu dulu.');
-
-    let newItemsCount = 0;
-
-    rows.forEach(row => {
-      if(items.length >= MAX_ROWS) return; // stop kalau sudah 50 hasil
-
-      const name = row.querySelector('.inp-name').value.trim();
-      const type = row.querySelector('.inp-type').value;
-      const contactEl = row.querySelector('.inp-contact');
-      const contact = (contactEl && !contactEl.disabled) ? contactEl.value.trim() : '';
-
-      if(!name) return;
-
-      if(type === 'wa' && !contact) return;
-      if(type === 'ig' && !contact) return;
-
-      items.push({ name, type, contact, version: 'tania' });
-      newItemsCount++;
-    });
-
-    if(newItemsCount > 0){
-      const desired = parseInt($('#bulkCount')?.value || '1', 10);
-      container.innerHTML = '';
-      setRowCount(desired);
-      render();
-
-      if(items.length >= MAX_ROWS){
-        showModal('Batas Maksimal', `Hasil generate maksimal ${MAX_ROWS} data.`);
-      }
-    } else {
-      showModal('Ups', 'Pastikan nama terisi. Untuk WA isi nomor, untuk IG isi username.');
-    }
-  });
-
-  $('#clearAllBtn').addEventListener('click', () => {
-    if(confirm('Yakin hapus semua hasil generate?')){
-      items = [];
-      render();
-    }
-  });
-
-  $('#exportCsvBtn').addEventListener('click', exportCSV);
-
-  // Init Theme
-  const root = document.documentElement;
-  const tBtn = $('#themeToggle');
-  const applyTheme = (isDark) => {
-    if(isDark){ root.classList.remove('light'); tBtn.innerHTML = '🌙'; }
-    else { root.classList.add('light'); tBtn.innerHTML = '🌞'; }
-  };
-  applyTheme(true);
-  tBtn.onclick = () => applyTheme(!root.classList.contains('light'));
-
-  // Init
-  setRowCount(1);
-  render();
-
-})();
-</script>
-</body>
+                // THEME LOGIC
+                const root = document.documentElement;
+                const tBtn = $("#themeToggle");
+                const applyTheme = (isDark) => {
+                    if (isDark) {
+                        root.classList.remove("light");
+                        tBtn.innerHTML = "🌙";
+                    } else {
+                        root.classList.add("light");
+                        tBtn.innerHTML = "🌞";
+                    }
+                };
+                // Default Dark
+                applyTheme(true);
+                tBtn.onclick = () =>
+                    applyTheme(!root.classList.contains("light"));
+            })();
+        </script>
+        <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+            integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+            data-cf-beacon='{"version":"2024.11.0","token":"1192be7b8b6b42edaa0568d8d55c4d8d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>
