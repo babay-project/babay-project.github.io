@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Babayshop Nota Generator V2.1</title>
+    <style>
+        :root {
+            --bg-dark: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --input-bg: #262626;
+            --border: #333;
+            --accent: #10a37f; /* ChatGPT Green */
+            --accent-glow: rgba(16, 163, 127, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #8e8ea0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 20px;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
+        .brand { color: var(--accent); }
+
+        /* --- Layout Container --- */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding-bottom: 100px; /* Space for FAB */
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+            }
+            .preview-section {
+                position: sticky;
+                top: 90px;
+            }
+        }
+
+        /* --- Form Cards --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        /* --- Hidden Logic --- */
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Preview Box --- */
+        .preview-box {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+        }
+
+        textarea#output {
+            width: 100%;
+            height: 450px;
+            background: transparent;
+            border: none;
+            color: #0f0; /* Matrix style text */
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+        }
+
+        /* --- Floating Action Button (Mobile Copy) --- */
+        .fab-copy {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .fab-copy:active { transform: scale(0.95); }
+
+        /* --- Date Switcher --- */
+        .toggle-container {
+            display: flex;
+            background: var(--input-bg);
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+        .toggle-btn.active {
+            background: var(--card-bg);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Babayshop<span class="brand">.id</span></h1>
+        <div style="font-size:0.7rem; color:var(--text-muted);">Generator V2.1</div>
+    </header>
+
+    <div class="container">
+        <section class="input-section">
+            <div class="card">
+                <label class="form-label">📦 PILIH PAKET</label>
+                <select id="paket" onchange="toggleFields(); generateNote()">
+                    <option value="invite">GPT Pro Plus (Invite Team)</option>
+                    <option value="direct">GPT Plus (Direct Login)</option>
+                    <option value="go">GPT Go (Max 1 Tahun)</option>
+                </select>
+            </div>
+
+            <div class="card fade-in">
+                <label class="form-label">📅 TANGGAL PEMBELIAN</label>
+                <div class="toggle-container">
+                    <div class="toggle-btn active" id="btn-now" onclick="setDateMode('now')">Hari Ini</div>
+                    <div class="toggle-btn" id="btn-custom" onclick="setDateMode('custom')">Custom</div>
+                </div>
+                <input type="date" id="custom-date" class="hidden" onchange="generateNote()">
+            </div>
+
+            <div id="fields-invite" class="card fade-in">
+                <label class="form-label" style="color:var(--accent);">👤 DATA INVITE</label>
+                <div style="margin-bottom:15px;">
+                    <label class="form-label">Email Pembeli</label>
+                    <input type="email" id="invite-email" placeholder="contoh@gmail.com" oninput="generateNote()">
+                </div>
+                <div>
+                    <label class="form-label">Nama Tim</label>
+                    <input type="text" id="invite-team" placeholder="Contoh: Babay Team 01" oninput="generateNote()">
+                </div>
+            </div>
+
+            <div id="fields-direct" class="card hidden fade-in">
+                <label class="form-label" style="color:var(--accent);">🔐 DATA AKUN (PRIVATE)</label>
+                <div style="margin-bottom:15px;">
+                    <label class="form-label">Email Akun</label>
+                    <input type="email" id="direct-email" placeholder="email@babay.id" oninput="generateNote()">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label class="form-label">Password</label>
+                    <input type="text" id="direct-pass" placeholder="password" oninput="generateNote()">
+                </div>
+                <div>
+                    <label class="form-label">Link Akses Email (Opsional)</label>
+                    <input type="text" id="direct-link" placeholder="yopmail.com/..." oninput="generateNote()">
+                </div>
+            </div>
+        </section>
+
+        <section class="preview-section">
+            <label class="form-label">Halaman Preview</label>
+            <div class="preview-box">
+                <textarea id="output" readonly></textarea>
+            </div>
+        </section>
+    </div>
+
+    <button class="fab-copy" onclick="copyToClipboard()">
+        <span id="btn-text">📋 Salin Nota</span>
+    </button>
+
+    <script>
+        // --- Logic Tanggal ---
+        let isCustomDate = false;
+        document.getElementById('custom-date').valueAsDate = new Date();
+
+        function setDateMode(mode) {
+            isCustomDate = (mode === 'custom');
+            const dateInput = document.getElementById('custom-date');
+            const btnNow = document.getElementById('btn-now');
+            const btnCustom = document.getElementById('btn-custom');
+
+            if (isCustomDate) {
+                dateInput.classList.remove('hidden');
+                btnCustom.classList.add('active');
+                btnNow.classList.remove('active');
+            } else {
+                dateInput.classList.add('hidden');
+                btnCustom.classList.remove('active');
+                btnNow.classList.add('active');
+            }
+            generateNote();
+        }
+
+        // --- Logic Tampilan Form ---
+        function toggleFields() {
+            const paket = document.getElementById('paket').value;
+            const inviteFields = document.getElementById('fields-invite');
+            const directFields = document.getElementById('fields-direct');
+
+            if (paket === 'invite') {
+                inviteFields.classList.remove('hidden');
+                directFields.classList.add('hidden');
+            } else {
+                // Direct & Go pakai form yang sama
+                inviteFields.classList.add('hidden');
+                directFields.classList.remove('hidden');
+            }
+        }
+
+        // --- Formatter Tanggal Indo ---
+        function formatDateID(dateObj) {
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            return `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+        }
+
+        // --- Core Generator ---
+        function generateNote() {
+            const paketVal = document.getElementById('paket').value;
+            
+            // Hitung Tanggal
+            let purchaseDate = new Date();
+            if (isCustomDate) {
+                const val = document.getElementById('custom-date').value;
+                if(val) purchaseDate = new Date(val);
+            }
+
+            // Hitung Garansi (+23 Hari) - UPDATED
+            let warrantyDate = new Date(purchaseDate);
+            warrantyDate.setDate(purchaseDate.getDate() + 23); // Ubah 25 jadi 23
+
+            const tglBeli = formatDateID(purchaseDate);
+            const tglGaransi = formatDateID(warrantyDate);
+
+            // Tentukan Judul Paket
+            let namaPaket = "";
+            let typeAccount = "";
+            if(paketVal === 'invite') {
+                namaPaket = "AI Chat GPT Pro Plus Invite 1 Bulan";
+                typeAccount = "Private Invite (Team)";
+            } else if(paketVal === 'direct') {
+                namaPaket = "AI Chat GPT Plus Direct 1 Bulan";
+                typeAccount = "Private Account (Personal)";
+            } else {
+                namaPaket = "AI Chat GPT Go (Max 1 Tahun)";
+                typeAccount = "Private Account (Personal)";
+            }
+
+            // --- Mulai Rangkai Text ---
+            let out = `╭────〔 BABAYSHOP.ID - PREMIUM 〕─\n`;
+            out += `┊・Item : ${namaPaket}\n`;
+            out += `┊・Type : ${typeAccount}\n`; // Semua private
+            out += `┊・Order Date : ${tglBeli}\n`;
+
+            if (paketVal !== 'go') {
+                out += `┊・Garansi : +23 Hari (${tglGaransi})\n`;
+            } else {
+                out += `┊・Masa Aktif : Max 1 Tahun (No Warranty)\n`;
+            }
+            
+            out += `╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n`;
+            out += `📦 DATA AKSES PRIVAT :\n`;
+
+            // Isi Data Akun
+            if (paketVal === 'invite') {
+                const email = document.getElementById('invite-email').value || "(Masukan Email)";
+                const team = document.getElementById('invite-team').value || "(Nama Tim)";
+                out += `▰ Email User : ${email}\n`;
+                out += `▰ Invitation : ${team}\n`;
+            } else {
+                const email = document.getElementById('direct-email').value || "-";
+                const pass = document.getElementById('direct-pass').value || "-";
+                const link = document.getElementById('direct-link').value;
+                
+                out += `▰ Email : ${email}\n`;
+                out += `▰ Pass : ${pass}\n`;
+                if(link) {
+                    out += `▰ Inbox Link : ${link}\n`;
+                }
+            }
+
+            out += `╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n`;
+
+            // Instruksi & Warning
+            if (paketVal === 'invite') {
+                out += `⚠️ PENTING (BACA):\n`;
+                out += `1. Cek email dari OpenAI, klik "Join Team".\n`;
+                out += `2. Karena ini sistem TIM, chat history & prompt HANYA TERSIMPAN selama anda di dalam tim.\n`;
+                out += `3. JIKA SUDAH EXPIRED/NONAKTIF, semua chat history akan HILANG dan tidak bisa diakses lagi.\n`;
+                out += `👉 WAJIB BACKUP/COPY hasil chat penting sebelum masa aktif habis.\n\n`;
+                
+                out += `🛡️ KLAIM GARANSI:\n`;
+                out += `• Garansi invite ulang jika tim bubar sebelum 23 hari.\n`;
+                out += `• Lewat masa garansi silakan order kembali.\n`;
+                
+            } else if (paketVal === 'direct') {
+                out += `📝 INSTRUKSI:\n`;
+                out += `1. Login di chat.openai.com pilih "Log in".\n`;
+                out += `2. Akun ini PRIVATE (Milik Anda Sendiri), dilarang share ke orang lain.\n`;
+                out += `3. Dilarang ubah email/password agar garansi valid.\n\n`;
+                
+                out += `🛡️ GARANSI:\n`;
+                out += `• Full cover 23 hari ganti akun jika back to free/error.\n`;
+                
+            } else if (paketVal === 'go') {
+                out += `📝 INSTRUKSI:\n`;
+                out += `1. Login menggunakan data di atas.\n`;
+                out += `2. Akun Private (Bukan Shared), privasi aman.\n\n`;
+                out += `ℹ️ STATUS:\n`;
+                out += `• Paket Hemat (GO), jika ada kendala login silakan hubungi admin.\n`;
+            }
+
+            out += `\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
+
+            document.getElementById('output').value = out;
+        }
+
+        // --- Copy Function ---
+        function copyToClipboard() {
+            const copyText = document.getElementById("output");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const btnText = document.getElementById("btn-text");
+                const originalText = btnText.innerText;
+                
+                btnText.innerText = "✅ Berhasil Disalin!";
+                document.querySelector('.fab-copy').style.backgroundColor = "#fff";
+                
+                setTimeout(() => {
+                    btnText.innerText = originalText;
+                    document.querySelector('.fab-copy').style.backgroundColor = "var(--accent)";
+                }, 2000);
+            });
+        }
+
+        // Init First Load
+        toggleFields();
+        generateNote();
+
+    </script>
+</body>
+</html>
