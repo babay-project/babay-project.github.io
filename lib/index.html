@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Saga Library Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #e0e0e0; height: 100vh; display: flex; overflow: hidden; }
+        
+        /* Sidebar: Daftar File */
+        .sidebar { width: 300px; background: #1e1e1e; border-right: 1px solid #333; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; background: #252526; border-bottom: 1px solid #333; }
+        .sidebar-header h2 { margin: 0; font-size: 18px; color: #0078d4; }
+        .file-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
+        .file-list li { padding: 12px 20px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: background 0.2s; font-size: 14px; }
+        .file-list li:hover { background: #2a2a2a; }
+        .file-list li.active { background: #37373d; border-left: 4px solid #0078d4; color: #fff; }
+        .file-icon { margin-right: 10px; color: #ffd700; }
+
+        /* Main: Area Baca File */
+        .main-content { flex: 1; display: flex; flex-direction: column; padding: 0; }
+        .toolbar { padding: 10px 20px; background: #252526; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .status-bar { font-size: 12px; color: #aaa; margin-left: 10px; }
+        textarea { flex: 1; background: #1e1e1e; color: #9cdcfe; border: none; padding: 20px; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; line-height: 1.5; resize: none; outline: none; }
+        
+        .btn { background: #0078d4; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn:hover { background: #0063b1; }
+        .error { color: #ff6b6b; }
+        .success { color: #6bff6b; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>📚 NS Library /lib/</h2>
+            <small style="color:#888">Klik file untuk membaca isinya</small>
+        </div>
+        <ul class="file-list" id="fileList">
+            </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="toolbar">
+            <div id="currentFileTitle">Pilih file di sebelah kiri...</div>
+            <div>
+                <span id="statusMsg" class="status-bar"></span>
+                <button class="btn" onclick="downloadContent()" id="dlBtn" style="display:none;">💾 Download Teks</button>
+            </div>
+        </div>
+        <textarea id="fileViewer" readonly placeholder="Isi file akan muncul di sini..."></textarea>
+    </div>
+
+    <script>
+        // 1. DAFTAR FILE (Hardcoded sesuai JSON Ninja Saga)
+        // Karena HTML statis tidak bisa scan folder, kita tulis manual.
+        const files = [
+            "accessory-effect.bin", "animation.bin", "arena-effect.bin",
+            "back_item-effect.bin", "enemy.bin", "gamedata.bin",
+            "library.bin", "mission.bin", "npc.bin",
+            "pet.bin", "senjutsu.bin", "skill-effect.bin",
+            "skills.bin", "talents.bin", "weapon-effect.bin"
+        ];
+
+        const fileListEl = document.getElementById('fileList');
+        const viewerEl = document.getElementById('fileViewer');
+        const statusEl = document.getElementById('statusMsg');
+        const titleEl = document.getElementById('currentFileTitle');
+        const dlBtn = document.getElementById('dlBtn');
+
+        // 2. RENDER DAFTAR FILE KE SIDEBAR
+        files.forEach(file => {
+            let li = document.createElement('li');
+            li.innerHTML = `<span class="file-icon">📄</span> ${file}`;
+            li.onclick = () => loadFile(file, li);
+            fileListEl.appendChild(li);
+        });
+
+        // 3. FUNGSI MEMBUKA FILE
+        async function loadFile(filename, element) {
+            // Highlight menu
+            document.querySelectorAll('.file-list li').forEach(l => l.classList.remove('active'));
+            element.classList.add('active');
+
+            titleEl.textContent = "Membuka: " + filename;
+            viewerEl.value = "Sedang mengunduh dan mendekripsi...";
+            statusEl.textContent = "Loading...";
+            statusEl.className = "status-bar";
+            dlBtn.style.display = 'none';
+
+            try {
+                // Fetch file dari folder yang sama
+                const response = await fetch(filename);
+                if (!response.ok) throw new Error("File tidak ditemukan di server (404)");
+                
+                const buffer = await response.arrayBuffer();
+                const uint8View = new Uint8Array(buffer);
+
+                // PROSES DEKRIPSI (ZLIB)
+                let text = "";
+                try {
+                    // Coba cara standar
+                    text = new TextDecoder("utf-8").decode(pako.inflate(uint8View));
+                    statusEl.textContent = "✅ Dekripsi Sukses (Standard)";
+                    statusEl.classList.add('success');
+                } catch (e1) {
+                    try {
+                        // Coba skip 4 byte (Format NS sering begini)
+                        text = new TextDecoder("utf-8").decode(pako.inflate(uint8View.subarray(4)));
+                        statusEl.textContent = "✅ Dekripsi Sukses (Skip 4 Byte)";
+                        statusEl.classList.add('success');
+                    } catch (e2) {
+                        throw new Error("Gagal mendekripsi. File mungkin corrupt atau bukan Zlib.");
+                    }
+                }
+
+                // Tampilkan hasil
+                viewerEl.value = text;
+                dlBtn.style.display = 'inline-block';
+
+            } catch (err) {
+                viewerEl.value = "ERROR:\n" + err.message;
+                statusEl.textContent = "❌ Gagal";
+                statusEl.classList.add('error');
+            }
+        }
+
+        // 4. FUNGSI DOWNLOAD HASIL
+        function downloadContent() {
+            const text = viewerEl.value;
+            const filename = titleEl.textContent.replace("Membuka: ", "").replace(".bin", ".txt");
+            const blob = new Blob([text], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+    </script>
+</body>
+</html>
