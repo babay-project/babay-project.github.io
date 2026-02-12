@@ -3,35 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Ninja Saga Editor (Direct Mode)</title>
+    <title>⚡ Ninja Saga Editor + Preview</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <style>
-        body { margin: 0; font-family: 'Segoe UI', monospace; background: #0d1117; color: #c9d1d9; height: 100vh; display: flex; }
+        body { margin: 0; font-family: 'Segoe UI', monospace; background: #0d1117; color: #c9d1d9; height: 100vh; display: flex; overflow: hidden; }
         
         /* SIDEBAR */
         .sidebar { width: 260px; background: #161b22; border-right: 1px solid #30363d; display: flex; flex-direction: column; }
         .sidebar-header { padding: 20px; border-bottom: 1px solid #30363d; }
         .sidebar-header h2 { margin: 0; color: #58a6ff; font-size: 16px; }
-        .sidebar-header small { color: #8b949e; font-size: 11px; }
-        
         .file-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
         .file-list li { padding: 10px 20px; cursor: pointer; border-bottom: 1px solid #21262d; font-size: 13px; transition: 0.2s; display: flex; align-items: center; }
         .file-list li:hover { background: #1f2428; color: #58a6ff; }
         .file-list li.active { background: #1f6feb; color: white; border-left: 4px solid #a371f7; }
-        .icon { margin-right: 10px; font-size: 16px; }
 
-        /* EDITOR */
-        .main { flex: 1; display: flex; flex-direction: column; }
-        .toolbar { padding: 12px 20px; background: #0d1117; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+        /* MAIN AREA */
+        .main { flex: 1; display: flex; flex-direction: column; position: relative; }
+        
+        /* TABS NAVIGATION */
+        .tabs { display: flex; background: #0d1117; border-bottom: 1px solid #30363d; }
+        .tab-btn { flex: 1; background: transparent; border: none; padding: 15px; color: #8b949e; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; }
+        .tab-btn:hover { background: #161b22; }
+        .tab-btn.active { color: #f0f6fc; border-bottom-color: #f78166; background: #161b22; }
+
+        /* TOOLBAR */
+        .toolbar { padding: 10px 20px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
         .file-info { font-weight: bold; color: #79c0ff; }
         
+        /* CONTENT VIEWS */
+        .view-container { flex: 1; position: relative; display: none; }
+        .view-container.active { display: flex; flex-direction: column; }
+
+        /* EDITOR VIEW */
         textarea { flex: 1; background: #0d1117; color: #7ee787; border: none; padding: 20px; font-family: 'Consolas', monospace; font-size: 14px; line-height: 1.5; resize: none; outline: none; }
         
-        .btn-save { background: #238636; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        /* PREVIEW TABLE VIEW */
+        .table-wrapper { flex: 1; overflow: auto; padding: 20px; background: #0d1117; }
+        table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; }
+        th, td { border: 1px solid #30363d; padding: 8px 12px; text-align: left; }
+        th { background: #21262d; color: #f0f6fc; position: sticky; top: 0; }
+        tr:nth-child(even) { background: #161b22; }
+        tr:hover { background: #232830; }
+        .val-num { color: #79c0ff; font-weight: bold; } /* Angka warna biru */
+        .val-txt { color: #a5d6a7; } /* Teks warna hijau */
+
+        .btn-save { background: #238636; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
         .btn-save:hover { background: #2ea043; }
         .btn-save:disabled { background: #333; cursor: not-allowed; }
-
-        .status { font-size: 12px; color: #8b949e; margin-right: 15px; }
     </style>
 </head>
 <body>
@@ -42,184 +60,242 @@
             <small id="repoDisplay">Connecting...</small>
         </div>
         <ul class="file-list" id="fileList">
-            <li onclick="loadFile('accessory-effect.bin', this)"><span class="icon">📜</span> accessory-effect.bin</li>
-            <li onclick="loadFile('animation.bin', this)"><span class="icon">📜</span> animation.bin</li>
-            <li onclick="loadFile('arena-effect.bin', this)"><span class="icon">📜</span> arena-effect.bin</li>
-            <li onclick="loadFile('back_item-effect.bin', this)"><span class="icon">🎒</span> back_item-effect.bin</li>
-            <li onclick="loadFile('enemy.bin', this)"><span class="icon">💀</span> enemy.bin</li>
-            <li onclick="loadFile('gamedata.bin', this)"><span class="icon">💾</span> gamedata.bin</li>
-            <li onclick="loadFile('library.bin', this)"><span class="icon">📚</span> library.bin</li>
-            <li onclick="loadFile('mission.bin', this)"><span class="icon">📜</span> mission.bin</li>
-            <li onclick="loadFile('npc.bin', this)"><span class="icon">👤</span> npc.bin</li>
-            <li onclick="loadFile('pet.bin', this)"><span class="icon">🐾</span> pet.bin</li>
-            <li onclick="loadFile('senjutsu.bin', this)"><span class="icon">🔥</span> senjutsu.bin</li>
-            <li onclick="loadFile('skill-effect.bin', this)"><span class="icon">✨</span> skill-effect.bin</li>
-            <li onclick="loadFile('skills.bin', this)"><span class="icon">⚔️</span> skills.bin</li>
-            <li onclick="loadFile('talents.bin', this)"><span class="icon">⭐</span> talents.bin</li>
-            <li onclick="loadFile('weapon-effect.bin', this)"><span class="icon">🗡️</span> weapon-effect.bin</li>
-        </ul>
+            <li onclick="loadFile('accessory-effect.bin', this)">accessory-effect.bin</li>
+            <li onclick="loadFile('back_item-effect.bin', this)">back_item-effect.bin</li>
+            <li onclick="loadFile('weapon-effect.bin', this)">weapon-effect.bin</li>
+            <li onclick="loadFile('skill-effect.bin', this)">skill-effect.bin</li>
+            <li onclick="loadFile('skills.bin', this)">skills.bin</li>
+            <li onclick="loadFile('pet.bin', this)">pet.bin</li>
+            </ul>
     </div>
 
     <div class="main">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('editor')">📝 1. CODE EDITOR (Edit Disini)</button>
+            <button class="tab-btn" onclick="switchTab('preview')">👁️ 2. HASIL / PREVIEW (Lihat Tabel)</button>
+        </div>
+
         <div class="toolbar">
-            <div class="file-info" id="currentFile">Pilih file di sebelah kiri...</div>
+            <div class="file-info" id="currentFile">Pilih file...</div>
             <div>
-                <span id="status" class="status">Siap.</span>
+                <span id="status" style="margin-right:10px; color:#aaa;"></span>
                 <button class="btn-save" onclick="pushToGitHub()" id="saveBtn" disabled>SAVE KE GITHUB</button>
             </div>
         </div>
-        <textarea id="editor" placeholder="Isi file akan muncul di sini... (XML/JSON)"></textarea>
+
+        <div id="view-editor" class="view-container active">
+            <textarea id="editor" placeholder="JSON akan muncul di sini..."></textarea>
+        </div>
+
+        <div id="view-preview" class="view-container">
+            <div class="table-wrapper">
+                <table id="previewTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Target</th>
+                            <th>Effect Name</th>
+                            <th>Type</th>
+                            <th>Calc</th>
+                            <th>Amount</th>
+                            <th>Chance</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewBody">
+                        <tr><td colspan="8" style="text-align:center">Klik Tab Preview untuk memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 <script>
     // ==========================================
-    // ⚙️ KONFIGURASI PRIBADI (EDIT DI SINI)
+    // ⚙️ KONFIGURASI (ISI ULANG DISINI)
     // ==========================================
     const CONFIG = {
         username: "babay-project",           // Ganti dengan Username GitHub kamu
         repo:     "babay-project.github.io", // Ganti dengan nama Repository kamu
         folder:   "lib/",             // Folder tempat file disimpan (jangan lupa slash / di akhir)
-        token:    "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" // Paste Token GitHub kamu di sini
-    };
+        token:    "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" // Paste Token GitHub kamu di sini    };
     // ==========================================
 
-    // Tampilkan info repo
     document.getElementById('repoDisplay').innerText = `${CONFIG.username}/${CONFIG.repo}`;
-
     let currentFileName = "";
-    let fileSha = "";      // ID unik file di GitHub (Wajib buat update)
-    let useSkip4Bytes = false; // Deteksi otomatis format Ninja Saga
+    let fileSha = "";
+    let useSkip4Bytes = false;
 
-    // 1. FUNGSI LOAD FILE
+    // --- FUNGSI TAB ---
+    function switchTab(tabName) {
+        // Atur Tombol
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Atur Tampilan
+        document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+        document.getElementById('view-' + tabName).classList.add('active');
+
+        // Jika pindah ke preview, generate tabel baru
+        if(tabName === 'preview') {
+            generatePreviewTable();
+        }
+    }
+
+    // --- FUNGSI LOAD FILE ---
     async function loadFile(filename, element) {
-        // UI Highlight
         document.querySelectorAll('li').forEach(l => l.classList.remove('active'));
         element.classList.add('active');
         
         currentFileName = filename;
-        document.getElementById('currentFile').innerText = "📂 " + filename;
-        document.getElementById('editor').value = "Sedang mengambil dari GitHub...";
+        document.getElementById('currentFile').innerText = filename;
+        document.getElementById('editor').value = "Loading...";
         document.getElementById('saveBtn').disabled = true;
-        setStatus("Menghubungi GitHub API...");
 
-        // URL API GitHub
         const apiUrl = `https://api.github.com/repos/${CONFIG.username}/${CONFIG.repo}/contents/${CONFIG.folder}${filename}`;
 
         try {
             const response = await fetch(apiUrl, {
-                headers: {
-                    'Authorization': `token ${CONFIG.token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
+                headers: { 'Authorization': `token ${CONFIG.token}`, 'Accept': 'application/vnd.github.v3+json' }
             });
-
-            if (!response.ok) throw new Error("File tidak ditemukan / Token Salah!");
-
+            if (!response.ok) throw new Error("Gagal ambil file!");
             const data = await response.json();
-            fileSha = data.sha; // Simpan SHA untuk keperluan Save nanti
+            fileSha = data.sha;
 
-            // Decode Base64 -> Binary
             const binaryString = atob(data.content);
-            const len = binaryString.length;
-            const bytes = new Uint8Array(len);
-            for (let i = 0; i < len; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
 
-            // Decompress ZLIB (Mencoba 2 metode)
             let text = "";
             try {
-                // Metode 1: Standar
                 text = new TextDecoder().decode(pako.inflate(bytes));
                 useSkip4Bytes = false;
-                setStatus("✅ Terbuka (Standar Zlib)");
-            } catch (e1) {
+            } catch (e) {
                 try {
-                    // Metode 2: Ninja Saga (Skip 4 byte header)
                     text = new TextDecoder().decode(pako.inflate(bytes.subarray(4)));
                     useSkip4Bytes = true;
-                    setStatus("✅ Terbuka (Skip 4 Byte)");
-                } catch (e2) {
-                    throw new Error("Gagal dekompresi. File corrupt atau bukan Zlib.");
-                }
+                } catch (e2) { throw new Error("Bukan file Zlib valid"); }
             }
 
-            document.getElementById('editor').value = text;
+            // Format JSON biar cantik (Pretty Print)
+            try {
+                const jsonObj = JSON.parse(text);
+                document.getElementById('editor').value = JSON.stringify(jsonObj, null, 4);
+            } catch(e) {
+                document.getElementById('editor').value = text; // Kalau bukan JSON, tampilkan apa adanya
+            }
+            
             document.getElementById('saveBtn').disabled = false;
+            document.getElementById('status').innerText = "✅ Loaded";
 
         } catch (err) {
-            console.error(err);
-            document.getElementById('editor').value = "ERROR:\n" + err.message;
-            setStatus("❌ Gagal Load");
+            alert(err.message);
+            document.getElementById('editor').value = "Error: " + err.message;
         }
     }
 
-    // 2. FUNGSI SAVE KE GITHUB
-    async function pushToGitHub() {
-        if (!currentFileName || !fileSha) return alert("File belum siap!");
-        
-        const contentText = document.getElementById('editor').value;
-        setStatus("⏳ Mengompres & Upload...");
-        document.getElementById('saveBtn').innerText = "MENYIMPAN...";
+    // --- FUNGSI GENERATE TABEL (LOGIKA UTAMA) ---
+    function generatePreviewTable() {
+        const rawText = document.getElementById('editor').value;
+        const tbody = document.getElementById('previewBody');
+        tbody.innerHTML = "";
 
         try {
-            // A. Kompres Teks ke Zlib
-            const dataBytes = new TextEncoder().encode(contentText);
+            const data = JSON.parse(rawText);
+            
+            // Cek apakah data array atau object
+            let items = Array.isArray(data) ? data : (data.files || []); // Handle format list atau format manifest
+
+            // Loop setiap Item (misal: back_item)
+            items.forEach(item => {
+                const itemId = item.id || item.name || "-";
+                
+                // Cek apakah item punya 'effects' (Array)
+                if (item.effects && Array.isArray(item.effects)) {
+                    item.effects.forEach(eff => {
+                        renderRow(tbody, itemId, eff);
+                    });
+                } else {
+                    // Kalau item tunggal (flat object)
+                    renderRow(tbody, itemId, item);
+                }
+            });
+
+        } catch (e) {
+            tbody.innerHTML = `<tr><td colspan="8" style="color:red; text-align:center;">ERROR: Data JSON tidak valid! Cek tab Editor.</td></tr>`;
+        }
+    }
+
+    // Fungsi bantu render baris tabel
+    function renderRow(tbody, id, data) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="color:#d2a8ff; font-weight:bold">${id}</td>
+            <td>${data.target || '-'}</td>
+            <td style="color:#7ee787">${data.effect_name || data.effect || '-'}</td>
+            <td>${data.type || '-'}</td>
+            <td>${data.calc_type || '-'}</td>
+            <td class="val-num">${data.amount !== undefined ? data.amount : '-'}</td>
+            <td class="val-num">${data.chance !== undefined ? data.chance + '%' : '-'}</td>
+            <td>${data.duration !== undefined ? data.duration : '-'}</td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    // --- FUNGSI SAVE (SAMA SEPERTI SEBELUMNYA) ---
+    async function pushToGitHub() {
+        if (!currentFileName || !fileSha) return;
+        const contentText = document.getElementById('editor').value; // Mengambil teks yang mungkin sudah diedit user
+        document.getElementById('saveBtn').innerText = "SAVING...";
+
+        try {
+            // Minify JSON sebelum save biar hemat size (Opsional)
+            let textToSave = contentText;
+            try {
+                const jsonObj = JSON.parse(contentText);
+                textToSave = JSON.stringify(jsonObj); // Hilangkan spasi/enter
+            } catch(e) {}
+
+            const dataBytes = new TextEncoder().encode(textToSave);
             let compressed = pako.deflate(dataBytes);
 
-            // B. Tambah Header 4 Byte (Jika tadi file aslinya pakai header)
             if (useSkip4Bytes) {
-                const header = new Uint8Array([0, 0, 0, 0]); // 4 byte kosong
+                const header = new Uint8Array([0, 0, 0, 0]);
                 const combined = new Uint8Array(header.length + compressed.length);
                 combined.set(header);
                 combined.set(compressed, header.length);
                 compressed = combined;
             }
 
-            // C. Convert Binary ke Base64 String (Manual biar aman)
             let binaryString = "";
-            for (let i = 0; i < compressed.length; i++) {
-                binaryString += String.fromCharCode(compressed[i]);
-            }
+            for (let i = 0; i < compressed.length; i++) binaryString += String.fromCharCode(compressed[i]);
             const base64Content = btoa(binaryString);
 
-            // D. Kirim ke GitHub API
             const apiUrl = `https://api.github.com/repos/${CONFIG.username}/${CONFIG.repo}/contents/${CONFIG.folder}${currentFileName}`;
             
-            const body = {
-                message: `Update ${currentFileName} (via Web Editor)`,
-                content: base64Content,
-                sha: fileSha // Wajib kirim SHA lama biar GitHub tau file mana yg ditimpa
-            };
-
             const response = await fetch(apiUrl, {
                 method: 'PUT',
-                headers: {
-                    'Authorization': `token ${CONFIG.token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
+                headers: { 'Authorization': `token ${CONFIG.token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: `Update ${currentFileName}`,
+                    content: base64Content,
+                    sha: fileSha
+                })
             });
 
             if (response.ok) {
-                const result = await response.json();
-                fileSha = result.content.sha; // Update SHA baru
-                setStatus("🎉 BERHASIL DISIMPAN!");
-                alert(`Sukses! ${currentFileName} sudah diupdate di GitHub.`);
+                const res = await response.json();
+                fileSha = res.content.sha;
+                alert("✅ BERHASIL DISIMPAN!");
             } else {
-                const err = await response.json();
-                throw new Error(err.message);
+                throw new Error("Gagal upload");
             }
-
         } catch (err) {
             alert("Gagal Save: " + err.message);
-            setStatus("❌ Gagal Save");
         } finally {
             document.getElementById('saveBtn').innerText = "SAVE KE GITHUB";
         }
     }
-
-    function setStatus(msg) { document.getElementById('status').innerText = msg; }
 </script>
 
 </body>
