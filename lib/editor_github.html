@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ GitHub Binary Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; height: 100vh; display: flex; flex-direction: column; }
+        
+        /* HEADER CONFIG */
+        .config-bar { background: #161b22; padding: 15px; border-bottom: 1px solid #30363d; display: flex; gap: 10px; flex-wrap: wrap; }
+        input { background: #0d1117; border: 1px solid #30363d; color: white; padding: 8px; border-radius: 6px; outline: none; }
+        input:focus { border-color: #58a6ff; }
+        
+        /* LAYOUT */
+        .container { flex: 1; display: flex; overflow: hidden; }
+        .sidebar { width: 250px; background: #0d1117; border-right: 1px solid #30363d; overflow-y: auto; }
+        .sidebar h3 { padding: 15px; margin: 0; color: #58a6ff; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .file-list { list-style: none; padding: 0; margin: 0; }
+        .file-list li { padding: 10px 20px; cursor: pointer; border-bottom: 1px solid #21262d; font-size: 13px; transition: 0.2s; }
+        .file-list li:hover { background: #161b22; }
+        .file-list li.active { background: #1f6feb; color: white; }
+
+        .editor-area { flex: 1; display: flex; flex-direction: column; }
+        .toolbar { padding: 10px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+        textarea { flex: 1; background: #0d1117; color: #7ee787; border: none; padding: 20px; font-family: 'Consolas', monospace; resize: none; outline: none; line-height: 1.5; }
+        
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-save { background: #238636; color: white; }
+        .btn-save:hover { background: #2ea043; }
+        .status { font-size: 12px; margin-right: 15px; color: #8b949e; }
+    </style>
+</head>
+<body>
+
+<div class="config-bar">
+    <input type="text" id="gh_username" placeholder="Username GitHub (cth: bayu27)" style="width: 150px;">
+    <input type="text" id="gh_repo" placeholder="Nama Repo (cth: ninja-saga-files)" style="width: 200px;">
+    <input type="text" id="gh_path" placeholder="Folder (cth: lib/)" style="width: 100px;" value="lib/">
+    <input type="password" id="gh_token" placeholder="Paste Token (ghp_...)" style="flex:1;">
+    <button class="btn" onclick="saveConfig()" style="background:#1f6feb; color:white;">Set Config</button>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <h3>File List</h3>
+        <ul class="file-list" id="fileList">
+            <li onclick="loadFile(this)">accessory-effect.bin</li>
+            <li onclick="loadFile(this)">animation.bin</li>
+            <li onclick="loadFile(this)">arena-effect.bin</li>
+            <li onclick="loadFile(this)">back_item-effect.bin</li>
+            <li onclick="loadFile(this)">enemy.bin</li>
+            <li onclick="loadFile(this)">library.bin</li>
+            <li onclick="loadFile(this)">mission.bin</li>
+            <li onclick="loadFile(this)">npc.bin</li>
+            <li onclick="loadFile(this)">pet.bin</li>
+            <li onclick="loadFile(this)">skills.bin</li>
+            <li onclick="loadFile(this)">weapon-effect.bin</li>
+        </ul>
+    </div>
+
+    <div class="editor-area">
+        <div class="toolbar">
+            <strong id="currentFileDisplay" style="color:#58a6ff">Pilih file...</strong>
+            <div>
+                <span id="status">Siap.</span>
+                <button class="btn btn-save" onclick="pushToGitHub()">COMMIT & SAVE TO GITHUB</button>
+            </div>
+        </div>
+        <textarea id="editor" placeholder="Isi file akan muncul di sini..."></textarea>
+    </div>
+</div>
+
+<script>
+    let currentFileName = "";
+    let fileSha = ""; // Penting untuk GitHub API (tanda pengenal file lama)
+    let useSkip4Bytes = false;
+
+    // Load config dari LocalStorage biar gak capek ngetik ulang
+    window.onload = () => {
+        if(localStorage.getItem("gh_user")) document.getElementById("gh_username").value = localStorage.getItem("gh_user");
+        if(localStorage.getItem("gh_repo")) document.getElementById("gh_repo").value = localStorage.getItem("gh_repo");
+        if(localStorage.getItem("gh_token")) document.getElementById("gh_token").value = localStorage.getItem("gh_token");
+    };
+
+    function saveConfig() {
+        localStorage.setItem("gh_user", document.getElementById("gh_username").value);
+        localStorage.setItem("gh_repo", document.getElementById("gh_repo").value);
+        localStorage.setItem("gh_token", document.getElementById("gh_token").value);
+        alert("Config tersimpan di browsermu!");
+    }
+
+    // 1. LOAD FILE DARI GITHUB API (BUKAN DARI URL BIASA)
+    async function loadFile(el) {
+        // UI Update
+        document.querySelectorAll('li').forEach(l => l.classList.remove('active'));
+        el.classList.add('active');
+        currentFileName = el.innerText;
+        document.getElementById("currentFileDisplay").innerText = currentFileName;
+        setStatus("Menghubungi GitHub API...");
+        document.getElementById("editor").value = "Loading data binary...";
+
+        const user = document.getElementById("gh_username").value;
+        const repo = document.getElementById("gh_repo").value;
+        const path = document.getElementById("gh_path").value;
+        const token = document.getElementById("gh_token").value;
+
+        if(!user || !repo || !token) return alert("Isi Username, Repo, dan Token dulu di atas!");
+
+        // GET Request ke GitHub API
+        const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${path}${currentFileName}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if(!response.ok) throw new Error("Gagal ambil file! Cek config/nama file.");
+
+            const data = await response.json();
+            fileSha = data.sha; // SIMPAN SHA INI (Wajib buat update nanti)
+
+            // GitHub ngasih konten dalam format Base64. Kita decode jadi Binary.
+            const binaryString = atob(data.content); // Base64 to Binary String
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+
+            // DECOMPRESS ZLIB
+            try {
+                // Coba standar
+                const text = new TextDecoder().decode(pako.inflate(bytes));
+                document.getElementById("editor").value = text;
+                useSkip4Bytes = false;
+                setStatus("✅ File Terbuka (Zlib Standar)");
+            } catch (e) {
+                try {
+                    // Coba skip 4 byte
+                    const text = new TextDecoder().decode(pako.inflate(bytes.subarray(4)));
+                    document.getElementById("editor").value = text;
+                    useSkip4Bytes = true;
+                    setStatus("✅ File Terbuka (Mode Skip 4 Byte)");
+                } catch (e2) {
+                    alert("Gagal dekompresi! File mungkin bukan Zlib.");
+                }
+            }
+
+        } catch (err) {
+            console.error(err);
+            setStatus("❌ Error: " + err.message);
+        }
+    }
+
+    // 2. SAVE (PUSH) KE GITHUB
+    async function pushToGitHub() {
+        if(!fileSha) return alert("File belum dimuat dengan benar!");
+        
+        const contentText = document.getElementById("editor").value;
+        setStatus("⏳ Mengompres ulang...");
+
+        try {
+            // A. KOMPRES ZLIB
+            const textEncoder = new TextEncoder();
+            const dataBytes = textEncoder.encode(contentText);
+            let compressed = pako.deflate(dataBytes);
+
+            // B. Tambah Header 4 Byte kalau perlu
+            if (useSkip4Bytes) {
+                const header = new Uint8Array([0, 0, 0, 0]);
+                const combined = new Uint8Array(header.length + compressed.length);
+                combined.set(header);
+                combined.set(compressed, header.length);
+                compressed = combined;
+            }
+
+            // C. Convert Uint8Array ke Base64 (Untuk API GitHub)
+            let binaryString = "";
+            for (let i = 0; i < compressed.length; i++) {
+                binaryString += String.fromCharCode(compressed[i]);
+            }
+            const base64Content = btoa(binaryString);
+
+            // D. KIRIM PUT REQUEST KE GITHUB
+            const user = document.getElementById("gh_username").value;
+            const repo = document.getElementById("gh_repo").value;
+            const path = document.getElementById("gh_path").value;
+            const token = document.getElementById("gh_token").value;
+            
+            const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${path}${currentFileName}`;
+
+            const bodyData = {
+                message: `Update ${currentFileName} via Web Editor`, // Pesan commit
+                content: base64Content,
+                sha: fileSha // Wajib menyertakan SHA lama
+            };
+
+            setStatus("🚀 Mengupload ke GitHub...");
+
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if(response.ok) {
+                const result = await response.json();
+                fileSha = result.content.sha; // Update SHA baru
+                setStatus("🎉 SUKSES! File terupdate di GitHub.");
+                alert("Berhasil disimpan! Tunggu 1-2 menit agar GitHub Pages refresh.");
+            } else {
+                const err = await response.json();
+                throw new Error(err.message);
+            }
+
+        } catch (err) {
+            console.error(err);
+            setStatus("❌ Gagal Save: " + err.message);
+            alert("Gagal Save: " + err.message);
+        }
+    }
+
+    function setStatus(msg) { document.getElementById("status").textContent = msg; }
+</script>
+
+</body>
+</html>
