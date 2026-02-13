@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛠️ Editor Ninja Saga (.BIN)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #222; color: #fff; padding: 20px; display: flex; flex-direction: column; height: 90vh; }
+        .box { background: #333; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        h2 { margin-top: 0; color: #00aaff; }
+        textarea { flex: 1; background: #111; color: #0f0; border: 1px solid #555; padding: 10px; font-family: monospace; resize: none; }
+        button { cursor: pointer; padding: 10px 20px; font-weight: bold; border: none; border-radius: 5px; margin-top: 10px; }
+        .btn-load { background: #007acc; color: white; }
+        .btn-save { background: #28a745; color: white; font-size: 16px; }
+        .btn-save:hover { background: #218838; }
+        .info { color: #aaa; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>1. Buka File</h2>
+        <div class="info">Pilih file .bin dari folder komputermu (misal: back_item-effect.bin)</div>
+        <input type="file" id="fileInput" accept=".bin">
+    </div>
+
+    <textarea id="editor" placeholder="Isi file akan muncul di sini..."></textarea>
+
+    <button class="btn-save" onclick="saveFile()">2. Download File .BIN Baru (Save)</button>
+
+<script>
+    let currentFileName = "file_edit.bin";
+    let useSkip4Bytes = false;
+
+    // SAAT PILIH FILE
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        currentFileName = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const uint8View = new Uint8Array(event.target.result);
+            
+            try {
+                // Coba cara standar
+                const text = new TextDecoder().decode(pako.inflate(uint8View));
+                document.getElementById('editor').value = text;
+                useSkip4Bytes = false;
+                alert("File terbuka! (Mode Standar)");
+            } catch (err1) {
+                try {
+                    // Coba cara Ninja Saga (Skip 4 byte)
+                    const text = new TextDecoder().decode(pako.inflate(uint8View.subarray(4)));
+                    document.getElementById('editor').value = text;
+                    useSkip4Bytes = true;
+                    alert("File terbuka! (Mode Ninja Saga)");
+                } catch (err2) {
+                    alert("Gagal baca file. Mungkin bukan file Zlib/Ninja Saga.");
+                }
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    // SAAT SAVE FILE
+    function saveFile() {
+        const text = document.getElementById('editor').value;
+        if(!text) return alert("Kosong bro!");
+
+        try {
+            // 1. Kompres teks jadi Zlib
+            const dataBytes = new TextEncoder().encode(text);
+            let compressed = pako.deflate(dataBytes);
+
+            // 2. Tambah 4 byte header (jika perlu)
+            if (useSkip4Bytes) {
+                const header = new Uint8Array([0, 0, 0, 0]);
+                const combined = new Uint8Array(header.length + compressed.length);
+                combined.set(header);
+                combined.set(compressed, header.length);
+                compressed = combined;
+            }
+
+            // 3. Download
+            const blob = new Blob([compressed], { type: "application/octet-stream" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = currentFileName; // Nama file sama dengan aslinya
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert("File berhasil didownload! Sekarang upload ke GitHub.");
+
+        } catch (e) {
+            alert("Error saat menyimpan: " + e);
+        }
+    }
+</script>
+
+</body>
+</html>
