@@ -5,226 +5,74 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Price List Reseller</title>
 
-        <meta
-            property="og:title"
-            content="Price List Seller Aplikasi Premium"
-        />
-        <meta
-            property="og:description"
-            content="Silahkan Jual Kembali dengan harga yg lebih affordable."
-        />
-        <meta
-            property="og:image"
-            content="https://img.lazcdn.com/g/ot/lzd-client-service/f80bd0c1e6afab75788bbd9cf7eff367.jpeg_720x720q80.jpg"
-        />
+        <meta property="og:title" content="Price List Seller Aplikasi Premium" />
+        <meta property="og:description" content="Silahkan Jual Kembali dengan harga yg lebih affordable." />
+        <meta property="og:image" content="https://img.lazcdn.com/g/ot/lzd-client-service/f80bd0c1e6afab75788bbd9cf7eff367.jpeg_720x720q80.jpg" />
         <meta property="og:url" content="https://babayshop.my.id" />
         <meta property="og:type" content="website" />
         <script src="https://cdn.tailwindcss.com"></script>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-            rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
 
         <style>
-            body {
-                font-family: "Inter", sans-serif;
-                background-color: #000;
-            }
-            /* Background Image dengan Overlay Gelap */
+            body { font-family: "Inter", sans-serif; background-color: #000; }
             .netflix-bg {
-                background-image:
-                    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                    url("https://assets.nflxext.com/ffe/siteui/vlv3/e94073b0-a056-402f-9015-16cb1e7e45c2/web/ID-en-20251110-TRIFECTA-perspective_29287120-1497-47a9-8b0a-49e7ded22f31_large.jpg");
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
+                background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://assets.nflxext.com/ffe/siteui/vlv3/e94073b0-a056-402f-9015-16cb1e7e45c2/web/ID-en-20251110-TRIFECTA-perspective_29287120-1497-47a9-8b0a-49e7ded22f31_large.jpg");
+                background-size: cover; background-position: center; background-repeat: no-repeat;
             }
-            /* Warna Merah Netflix */
-            .text-netflix-red {
-                color: #e50914;
-            }
-            .bg-netflix-red {
-                background-color: #e50914;
-            }
-
-            /* Animasi Fade In */
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1);
-                }
-            }
-            .animate-fade-in {
-                animation: fadeIn 0.8s ease-out forwards;
-            }
-
-            /* Animasi Progress Bar */
-            @keyframes progress {
-                from {
-                    width: 0%;
-                }
-                to {
-                    width: 100%;
-                }
-            }
-            .animate-progress {
-                animation: progress 2s linear forwards;
-            }
-
-            /* Animasi Shake (Goyang) untuk PIN Salah */
+            .text-netflix-red { color: #e50914; }
+            .bg-netflix-red { background-color: #e50914; }
+            @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+            .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+            @keyframes progress { from { width: 0%; } to { width: 100%; } }
+            .animate-progress { animation: progress 2s linear forwards; }
             @keyframes shake {
                 0%, 100% { transform: translateX(0); }
                 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
                 20%, 40%, 60%, 80% { transform: translateX(5px); }
             }
-            .animate-shake {
-                animation: shake 0.4s ease-in-out;
-            }
-            
-            /* Sembunyikan panah input number di browser */
-            input[type="number"]::-webkit-inner-spin-button, 
-            input[type="number"]::-webkit-outer-spin-button { 
-                -webkit-appearance: none; 
-                margin: 0; 
-            }
+            .animate-shake { animation: shake 0.4s ease-in-out; }
+            input[type="password"]::-webkit-inner-spin-button, 
+            input[type="password"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         </style>
     </head>
-    <body
-        class="netflix-bg min-h-screen flex flex-col items-center justify-center p-6 text-white overflow-hidden"
-    >
+    <body class="netflix-bg min-h-screen flex flex-col items-center justify-center p-6 text-white overflow-hidden">
+        
         <div id="pinSection" class="z-10 text-center max-w-sm w-full animate-fade-in bg-black/60 p-8 rounded-2xl backdrop-blur-md border border-gray-800 shadow-[0_0_30px_rgba(0,0,0,0.8)]">
             <div class="mb-6">
-                <img
-                    src="https://blogger.googleusercontent.com/img/a/AVvXsEgbA0u3mLq7uC5mh6uoCyyTlQF4RbLZVcqodzRQFGs9za-yvi51Ok3ik1xRVBx8TQbV-21b22EdhY5rgxom9NVduxVEWvrYvdnk3THfDmm_q8aeXVSEYxrEwdCbWBgoKZUdT9YTi5dDQ5-_oJHM4jg6njfNcUVricWlOLBC4bnVw7TG1TTwAxqi4lWuuCk_"
-                    alt="Logo Babayshop"
-                    class="w-16 h-16 mx-auto object-contain drop-shadow-lg"
-                />
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgbA0u3mLq7uC5mh6uoCyyTlQF4RbLZVcqodzRQFGs9za-yvi51Ok3ik1xRVBx8TQbV-21b22EdhY5rgxom9NVduxVEWvrYvdnk3THfDmm_q8aeXVSEYxrEwdCbWBgoKZUdT9YTi5dDQ5-_oJHM4jg6njfNcUVricWlOLBC4bnVw7TG1TTwAxqi4lWuuCk_" alt="Logo Babayshop" class="w-16 h-16 mx-auto object-contain drop-shadow-lg" />
             </div>
-            
             <h2 class="text-2xl font-black mb-2 tracking-tight">AKSES TERKUNCI</h2>
             <p class="text-gray-400 text-sm mb-6">Masukkan PIN untuk melihat harga</p>
-
             <div class="mb-4">
-                <input type="password" id="pinInput" maxlength="4" placeholder="••••"
-                    class="w-full bg-gray-900/80 border border-gray-700 text-white text-center text-3xl py-3 rounded-xl focus:outline-none focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all tracking-[0.5em] font-mono">
+                <input type="password" id="pinInput" maxlength="4" placeholder="••••" class="w-full bg-gray-900/80 border border-gray-700 text-white text-center text-3xl py-3 rounded-xl focus:outline-none focus:border-netflix-red focus:ring-1 focus:ring-netflix-red transition-all tracking-[0.5em] font-mono">
             </div>
-            
             <p id="errorMsg" class="text-netflix-red text-sm mb-4 font-medium hidden">PIN salah! Silakan coba lagi.</p>
-
-            <button onclick="verifyPin()"
-                class="w-full bg-netflix-red text-white font-bold py-3.5 rounded-xl hover:bg-red-700 transition-colors duration-300 shadow-[0_0_15px_rgba(229,9,20,0.4)]">
-                BUKA AKSES
-            </button>
+            <button onclick="verifyPin()" class="w-full bg-netflix-red text-white font-bold py-3.5 rounded-xl hover:bg-red-700 transition-colors duration-300 shadow-[0_0_15px_rgba(229,9,20,0.4)]">BUKA AKSES</button>
         </div>
 
         <div id="mainSection" class="z-10 text-center max-w-lg w-full hidden">
             <div class="mb-8">
-                <img
-                    src="https://blogger.googleusercontent.com/img/a/AVvXsEgbA0u3mLq7uC5mh6uoCyyTlQF4RbLZVcqodzRQFGs9za-yvi51Ok3ik1xRVBx8TQbV-21b22EdhY5rgxom9NVduxVEWvrYvdnk3THfDmm_q8aeXVSEYxrEwdCbWBgoKZUdT9YTi5dDQ5-_oJHM4jg6njfNcUVricWlOLBC4bnVw7TG1TTwAxqi4lWuuCk_"
-                    alt="Logo Babayshop"
-                    class="w-24 h-24 mx-auto object-contain drop-shadow-lg hover:scale-105 transition-transform duration-300"
-                />
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgbA0u3mLq7uC5mh6uoCyyTlQF4RbLZVcqodzRQFGs9za-yvi51Ok3ik1xRVBx8TQbV-21b22EdhY5rgxom9NVduxVEWvrYvdnk3THfDmm_q8aeXVSEYxrEwdCbWBgoKZUdT9YTi5dDQ5-_oJHM4jg6njfNcUVricWlOLBC4bnVw7TG1TTwAxqi4lWuuCk_" alt="Logo Babayshop" class="w-24 h-24 mx-auto object-contain drop-shadow-lg hover:scale-105 transition-transform duration-300" />
             </div>
-
-            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">
-                RESELLER AKUN PREMIUM
-            </h1>
-
-            <p class="text-gray-300 text-lg mb-8 font-medium">
-                Harga Lebih Murah...
-            </p>
-
-            <div
-                class="w-full bg-gray-700/50 rounded-full h-1.5 mb-6 overflow-hidden"
-            >
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight">RESELLER AKUN PREMIUM</h1>
+            <p class="text-gray-300 text-lg mb-8 font-medium">Harga Lebih Murah...</p>
+            <div class="w-full bg-gray-700/50 rounded-full h-1.5 mb-6 overflow-hidden">
                 <div id="progressBar" class="bg-netflix-red h-1.5 rounded-full shadow-[0_0_10px_rgba(229,9,20,0.7)]"></div>
             </div>
-
-            <p class="text-sm text-gray-400">
-                Mengalihkan dalam
-                <span id="countdown" class="font-bold text-white">2</span>
-                detik...
-            </p>
-
-            <div class="mt-8 opacity-0 animate-[fadeIn_0.5s_ease-out_1s_forwards]">
-                <a
-                    href="https://padlet.com/babayshopid/reseller-akun-premium-mp3ysou668gk2vej"
-                    class="text-xs text-gray-500 hover:text-white transition-colors underline decoration-netflix-red underline-offset-4"
-                >
-                    Klik disini jika tidak dialihkan
-                </a>
-            </div>
+            <p class="text-sm text-gray-400">Mengalihkan dalam <span id="countdown" class="font-bold text-white">2</span> detik...</p>
         </div>
 
         <script>
-            // --- LOGIKA PIN ---
-            const correctPin = "0354";
-            const pinInput = document.getElementById("pinInput");
-            const pinSection = document.getElementById("pinSection");
-            const mainSection = document.getElementById("mainSection");
-            const errorMsg = document.getElementById("errorMsg");
-            const progressBar = document.getElementById("progressBar");
-
-            // Memicu klik tombol buka saat tekan Enter
-            pinInput.addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    verifyPin();
-                }
-            });
-
-            function verifyPin() {
-                if (pinInput.value === correctPin) {
-                    // Jika PIN Benar
-                    pinSection.classList.add("hidden"); // Sembunyikan layar login
-                    mainSection.classList.remove("hidden"); // Tampilkan layar utama
-                    mainSection.classList.add("animate-fade-in"); // Tambahkan efek transisi
-                    progressBar.classList.add("animate-progress"); // Mulai animasi bar
-                    startRedirect(); // Jalankan fungsi hitung mundur
-                } else {
-                    // Jika PIN Salah
-                    errorMsg.classList.remove("hidden");
-                    pinInput.value = ""; // Kosongkan input
-                    
-                    // Efek Goyang (Shake)
-                    pinSection.classList.remove("animate-shake");
-                    void pinSection.offsetWidth; // Trigger reflow agar animasi bisa diulang
-                    pinSection.classList.add("animate-shake");
-                    
-                    // Ubah border jadi merah
-                    pinInput.classList.add("border-netflix-red");
-                    setTimeout(() => {
-                        pinInput.classList.remove("border-netflix-red");
-                    }, 1000);
-                }
-            }
-
-            // --- LOGIKA REDIRECT (Dipanggil setelah login berhasil) ---
-            function startRedirect() {
-                let timeLeft = 2;
-                const countdownEl = document.getElementById("countdown");
-                const targetUrl = "https://padlet.com/babayshopid/reseller-akun-premium-mp3ysou668gk2vej";
-
-                const timer = setInterval(() => {
-                    timeLeft--;
-                    if (countdownEl) {
-                        countdownEl.innerText = timeLeft;
-                    }
-
-                    if (timeLeft <= 0) {
-                        clearInterval(timer);
-                        window.location.href = targetUrl;
-                    }
-                }, 1000);
-
-                // Fallback safety
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 2500);
+            const _0x1a=atob("MDM1NA=="),_0x2b=atob("aHR0cHM6Ly9wYWRsZXQuY29tL2JhYmF5c2hvcGlkL3Jlc2VsbGVyLWFrdW4tcHJlbWl1bS1tcDN5c291NjY4Z2sydmVq"),_0x3c=document.getElementById("pinInput"),_0x4d=document.getElementById("pinSection"),_0x5e=document.getElementById("mainSection"),_0x6f=document.getElementById("errorMsg"),_0x7g=document.getElementById("progressBar");_0x3c.addEventListener("keypress",(e)=>{if(e.key==="Enter"){e.preventDefault();_0x8h()}});function _0x8h(){if(_0x3c.value===_0x1a){_0x4d.classList.add("hidden");_0x5e.classList.remove("hidden");_0x5e.classList.add("animate-fade-in");_0x7g.classList.add("animate-progress");_0x9i()}else{_0x6f.classList.remove("hidden");_0x3c.value="";_0x4d.classList.remove("animate-shake");void _0x4d.offsetWidth;_0x4d.classList.add("animate-shake");_0x3c.classList.add("border-netflix-red");setTimeout(()=>{_0x3c.classList.remove("border-netflix-red")},1e3)}}function _0x9i(){let t=2;const c=document.getElementById("countdown"),m=setInterval(()=>{t--;if(c)c.innerText=t;if(t<=0){clearInterval(m);window.location.href=_0x2b}},1e3);setTimeout(()=>{window.location.href=_0x2b},2500)}function verifyPin(){_0x8h()}
+            
+            // Anti Klik Kanan & Anti Inspect Element
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.onkeydown = function(e) {
+                if(e.keyCode == 123) return false;
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+                if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
         </script>
     </body>
