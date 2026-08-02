@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Babayshop Nota Generator Final</title>
+    <title>Babayshop Nota Generator</title>
+
     <style>
         :root {
             --bg-dark: #0f0f0f;
             --card-bg: #1a1a1a;
             --input-bg: #262626;
-            --border: #333;
+            --border: #333333;
             --accent: #10a37f;
             --accent-hover: #0d8a6a;
             --text-main: #ffffff;
@@ -17,10 +18,16 @@
             --danger: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
@@ -29,19 +36,27 @@
 
         header {
             padding: 20px;
-            background: rgba(26, 26, 26, 0.95);
+            background: rgba(26, 26, 26, 0.96);
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
-        h1 { font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; }
-        .brand { color: var(--accent); }
+        h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .brand {
+            color: var(--accent);
+        }
 
         .container {
-            max-width: 600px; /* Fokus mobile layout */
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -59,12 +74,13 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 12px;
             background: var(--input-bg);
@@ -76,14 +92,42 @@
             transition: 0.2s;
         }
 
-        select:focus, input:focus { border-color: var(--accent); }
+        select:focus,
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.12);
+        }
 
-        /* Button Group */
+        input::placeholder {
+            color: #777777;
+        }
+
+        .field-space {
+            margin-bottom: 12px;
+        }
+
+        .helper-text {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 6px;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
         .btn-submit {
             width: 100%;
             padding: 15px;
             background: var(--accent);
-            color: #000;
+            color: #000000;
             font-weight: 800;
             border: none;
             border-radius: 10px;
@@ -91,57 +135,73 @@
             cursor: pointer;
             margin-top: 10px;
             box-shadow: 0 4px 15px rgba(16, 163, 127, 0.3);
-            transition: transform 0.1s;
+            transition: 0.2s;
         }
-        .btn-submit:active { transform: scale(0.98); }
 
-        /* Result Section */
+        .btn-submit:hover {
+            background: var(--accent-hover);
+            color: white;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
         #result-section {
             margin-top: 30px;
-            display: none; /* Hidden by default */
+            display: none;
             animation: slideUp 0.4s ease-out;
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
             margin-bottom: 10px;
         }
 
         textarea#output {
             width: 100%;
-            height: 480px;
-            background: #000;
+            height: 580px;
+            background: #000000;
             border: 1px solid var(--border);
             border-radius: 8px;
-            color: #fff;
-            font-family: 'Consolas', monospace;
+            color: #ffffff;
+            font-family: Consolas, "Courier New", monospace;
             font-size: 0.9rem;
             padding: 15px;
-            resize: none;
+            resize: vertical;
             outline: none;
-            line-height: 1.5;
+            line-height: 1.55;
         }
-        
+
         textarea#output:focus {
             border-color: var(--accent);
         }
 
         .btn-copy {
-            background: #fff;
-            color: #000;
+            background: #ffffff;
+            color: #000000;
             border: none;
             padding: 8px 15px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 0.9rem;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-reset {
@@ -156,227 +216,476 @@
             cursor: pointer;
         }
 
-        /* Utilities */
-        .hidden { display: none; }
-        .row { display: flex; gap: 10px; }
-        .col { flex: 1; }
+        .btn-reset:hover {
+            background: rgba(239, 68, 68, 0.08);
+        }
 
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 14px;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            textarea#output {
+                height: 620px;
+            }
+        }
     </style>
 </head>
-<body>
 
+<body>
     <header>
         <h1>BABAYSHOP<span class="brand">.MY.ID</span></h1>
     </header>
 
-    <div class="container">
-        <div id="input-form">
+    <main class="container">
+        <section id="input-form">
+
             <div class="card">
-                <label class="form-label">📦 JENIS PAKET</label>
+                <label class="form-label" for="paket">📦 Jenis Paket</label>
+
                 <select id="paket" onchange="toggleFields()">
-                    <option value="invite">GPT PRO PLUS (Invite Team)</option>
-                    <option value="direct">GPT PLUS (Direct Login)</option>
-                    <option value="go">GPT GO (Max 1 Tahun)</option>
+                    <option value="invite">GPT PRO PLUS — Invite Team</option>
+                    <option value="direct">GPT PLUS — Direct Login Private</option>
+                    <option value="sharing">GPT PLUS — Sharing 3–5 Orang</option>
+                    <option value="go">GPT GO — Max 1 Tahun</option>
                 </select>
             </div>
 
             <div class="card">
-                <label class="form-label">📅 TANGGAL ORDER</label>
-                <input type="date" id="custom-date">
-                <small style="color:var(--text-muted); font-size:0.75rem; margin-top:5px; display:block;">
-                    *Garansi otomatis dihitung +23 Hari dari tanggal ini.
+                <label class="form-label">📅 Tanggal dan Garansi</label>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="helper-text" for="custom-date" style="margin-bottom:6px;">
+                            Tanggal order
+                        </label>
+                        <input type="date" id="custom-date">
+                    </div>
+
+                    <div class="col">
+                        <label class="helper-text" for="garansi-hari" style="margin-bottom:6px;">
+                            Garansi berapa hari
+                        </label>
+                        <input
+                            type="number"
+                            id="garansi-hari"
+                            value="5"
+                            min="0"
+                            max="365"
+                            inputmode="numeric"
+                            placeholder="Contoh: 5"
+                        >
+                    </div>
+                </div>
+
+                <small class="helper-text">
+                    Tanggal akhir garansi akan dihitung otomatis dari tanggal order.
                 </small>
             </div>
 
             <div id="fields-invite" class="card">
-                <label class="form-label" style="color:var(--accent);">👤 DATA INVITE</label>
-                <div style="margin-bottom:12px;">
-                    <input type="email" id="invite-email" placeholder="Email Pembeli...">
+                <label class="form-label" style="color:var(--accent);">
+                    👤 Data Invite
+                </label>
+
+                <div class="field-space">
+                    <input
+                        type="email"
+                        id="invite-email"
+                        placeholder="Email pembeli..."
+                        autocomplete="off"
+                    >
                 </div>
+
                 <div>
-                    <input type="text" id="invite-team" placeholder="Nama Tim...">
+                    <input
+                        type="text"
+                        id="invite-team"
+                        placeholder="Nama team / workspace..."
+                        autocomplete="off"
+                    >
                 </div>
             </div>
 
-            <div id="fields-direct" class="card hidden">
-                <label class="form-label" style="color:var(--accent);">🔐 DATA AKUN</label>
-                <div style="margin-bottom:12px;">
-                    <input type="email" id="direct-email" placeholder="Email Akun...">
+            <div id="fields-account" class="card hidden">
+                <label class="form-label" style="color:var(--accent);">
+                    🔐 Data Akun
+                </label>
+
+                <div class="field-space">
+                    <input
+                        type="email"
+                        id="direct-email"
+                        placeholder="Email akun..."
+                        autocomplete="off"
+                    >
                 </div>
-                <div style="margin-bottom:12px;">
-                    <input type="text" id="direct-pass" placeholder="Password...">
+
+                <div class="field-space">
+                    <input
+                        type="text"
+                        id="direct-pass"
+                        placeholder="Password akun..."
+                        autocomplete="off"
+                    >
                 </div>
+
                 <div>
-                    <input type="text" id="direct-link" placeholder="Link Akses (Opsional)...">
+                    <input
+                        type="url"
+                        id="direct-link"
+                        placeholder="Link OTP / MFA (opsional)..."
+                        autocomplete="off"
+                    >
                 </div>
+
+                <small class="helper-text">
+                    Isi link OTP/MFA apabila akun memerlukan one-time code saat login.
+                </small>
             </div>
 
-            <button class="btn-submit" onclick="processNote()">BUAT NOTA</button>
-        </div>
+            <button class="btn-submit" type="button" onclick="processNote()">
+                BUAT NOTA
+            </button>
+        </section>
 
-        <div id="result-section">
+        <section id="result-section">
             <div class="result-header">
-                <span style="font-weight:bold; color:var(--accent);">HASIL NOTA (Bisa Diedit)</span>
-                <button class="btn-copy" onclick="copyToClipboard()" id="btn-copy">Salin</button>
-            </div>
-            
-            <textarea id="output" spellcheck="false"></textarea>
-            
-            <button class="btn-reset" onclick="resetForm()">↺ Buat Baru</button>
-        </div>
+                <span style="font-weight:bold; color:var(--accent);">
+                    HASIL NOTA (Bisa Diedit)
+                </span>
 
-    </div>
+                <button
+                    class="btn-copy"
+                    type="button"
+                    onclick="copyToClipboard()"
+                    id="btn-copy"
+                >
+                    Salin
+                </button>
+            </div>
+
+            <textarea id="output" spellcheck="false"></textarea>
+
+            <button class="btn-reset" type="button" onclick="resetForm()">
+                ↺ Buat Baru
+            </button>
+        </section>
+    </main>
 
     <script>
-        // Set Default Date Today
-        document.getElementById('custom-date').valueAsDate = new Date();
+        const dateInput = document.getElementById("custom-date");
 
-        // Toggle Form
+        function getLocalDateString(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        }
+
+        dateInput.value = getLocalDateString();
+
         function toggleFields() {
-            const paket = document.getElementById('paket').value;
-            if (paket === 'invite') {
-                document.getElementById('fields-invite').classList.remove('hidden');
-                document.getElementById('fields-direct').classList.add('hidden');
+            const paket = document.getElementById("paket").value;
+            const inviteFields = document.getElementById("fields-invite");
+            const accountFields = document.getElementById("fields-account");
+
+            if (paket === "invite") {
+                inviteFields.classList.remove("hidden");
+                accountFields.classList.add("hidden");
             } else {
-                document.getElementById('fields-invite').classList.add('hidden');
-                document.getElementById('fields-direct').classList.remove('hidden');
+                inviteFields.classList.add("hidden");
+                accountFields.classList.remove("hidden");
             }
         }
 
-        // Format Date Indo
+        function parseLocalDate(dateString) {
+            if (!dateString) {
+                return new Date();
+            }
+
+            const parts = dateString.split("-").map(Number);
+
+            return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+
         function formatDateID(dateObj) {
             const months = [
-                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember"
             ];
+
             return `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
         }
 
-        // --- CORE PROCESS FUNCTION ---
+        function getWarrantyData() {
+            const purchaseDate = parseLocalDate(dateInput.value);
+            const warrantyDaysInput = parseInt(
+                document.getElementById("garansi-hari").value,
+                10
+            );
+
+            const warrantyDays = Number.isNaN(warrantyDaysInput)
+                ? 0
+                : Math.max(0, warrantyDaysInput);
+
+            const warrantyDate = new Date(purchaseDate);
+            warrantyDate.setDate(warrantyDate.getDate() + warrantyDays);
+
+            return {
+                purchaseDate,
+                warrantyDate,
+                warrantyDays
+            };
+        }
+
+        function buildLoginInstruction(linkExists) {
+            return `📝 CARA LOGIN:
+1. Buka aplikasi atau website ChatGPT.
+2. Masukkan email akun langsung di halaman login ChatGPT.
+3. Masukkan password yang diberikan.
+4. Jika diminta "One-Time Code", buka Link OTP / MFA yang disediakan.
+5. Salin kode OTP yang muncul, lalu masukkan kodenya di ChatGPT.
+6. Jika tidak diminta kode OTP, lanjutkan login seperti biasa.${linkExists ? "" : "\n\n⚠️ Link OTP / MFA tidak dicantumkan. Hubungi admin jika ChatGPT meminta one-time code."}`;
+        }
+
+        function buildWarrantyText(warrantyDays) {
+            return `🛡️ GARANSI:
+• Garansi selama ${warrantyDays} hari.
+• Lebih dari masa garansi, silakan order kembali.`;
+        }
+
         function processNote() {
-            const paketVal = document.getElementById('paket').value;
-            
-            // Date Calculation
-            let purchaseDate = new Date(document.getElementById('custom-date').value);
-            let warrantyDate = new Date(purchaseDate);
-            warrantyDate.setDate(purchaseDate.getDate() + 23); // LOGIKA 23 HARI
+            const paketVal = document.getElementById("paket").value;
+            const warrantyData = getWarrantyData();
 
-            const tglOrder = formatDateID(purchaseDate);
-            const tglGaransi = formatDateID(warrantyDate);
+            const tglOrder = formatDateID(warrantyData.purchaseDate);
+            const tglGaransi = formatDateID(warrantyData.warrantyDate);
+            const garansiHari = warrantyData.warrantyDays;
 
-            // Variables
             let itemName = "";
             let typeName = "";
             let accountData = "";
             let instructions = "";
 
-            // LOGIC CONTENT
-            if (paketVal === 'invite') {
-                itemName = "AI Chat GPT Pro Plus Invite 1 Bulan";
+            if (paketVal === "invite") {
+                itemName = "AI ChatGPT Pro Plus Invite 1 Bulan";
                 typeName = "Private Invite (Team)";
-                
-                const email = document.getElementById('invite-email').value || "email@user.com";
-                const team = document.getElementById('invite-team').value || "Team Babay";
-                
-                accountData = `▰ Email User : ${email}\n▰ Invitation : ${team}`;
 
-                instructions = `⚠️ PENTING (BACA):
-1. Cek email dari OpenAI/ Chatgpt, klik "Join Team".
-2. Karena ini sistem TIM, chat history & prompt HANYA TERSIMPAN selama anda di dalam tim.
-3. JIKA SUDAH EXPIRED/NONAKTIF, semua chat history akan HILANG dan tidak bisa diakses lagi.
-👉 JADI... WAJIB BACKUP/COPY hasil chat penting sebelum masa aktif habis.
+                const email =
+                    document.getElementById("invite-email").value.trim() ||
+                    "email@user.com";
 
-🛡️ KLAIM GARANSI:
-* Garansi invite ulang jika tim bubar sebelum 23 hari.
-* Lewat masa garansi silakan order kembali.`;
+                const team =
+                    document.getElementById("invite-team").value.trim() ||
+                    "Team Babayshop";
 
-            } else if (paketVal === 'direct') {
-                itemName = "AI Chat GPT Plus Direct 1 Bulan";
+                accountData =
+`▰ Email User : ${email}
+▰ Invitation : ${team}`;
+
+                instructions =
+`📝 CARA AKTIVASI:
+1. Buka email yang didaftarkan.
+2. Cari email undangan dari OpenAI / ChatGPT.
+3. Klik tombol "Join Team" atau terima undangan team.
+4. Masuk ke workspace/team yang sesuai sebelum mulai menggunakan ChatGPT.
+
+⚠️ PENTING:
+• Karena menggunakan sistem team, chat dan prompt hanya dapat diakses selama akun masih berada di dalam team.
+• Jika team expired, dibubarkan, atau akses dicabut, riwayat chat di dalam workspace tersebut dapat tidak bisa diakses lagi.
+• Salin atau backup hasil chat penting sebelum masa aktif paket berakhir.
+
+${buildWarrantyText(garansiHari)}`;
+
+            } else if (paketVal === "direct") {
+                itemName = "AI ChatGPT Plus Direct 1 Bulan";
                 typeName = "Private Account (Personal)";
-                
-                const email = document.getElementById('direct-email').value || "-";
-                const pass = document.getElementById('direct-pass').value || "-";
-                const link = document.getElementById('direct-link').value;
-                
-                accountData = `▰ Email : ${email}\n▰ Password : ${pass}`;
-                if(link) accountData += `\n▰ Link Akses : ${link}`;
 
-                instructions = `📝 INSTRUKSI:
-1. Login langsung di chat.openai.com.
-2. Akun Private (Milik Sendiri).
-3. Dilarang ganti email/password agar garansi valid.
+                const email =
+                    document.getElementById("direct-email").value.trim() || "-";
 
-🛡️ KLAIM GARANSI:
-* Garansi Full 23 Hari ganti akun jika error/back to free.`;
+                const pass =
+                    document.getElementById("direct-pass").value.trim() || "-";
 
-            } else { // GO
-                itemName = "AI Chat GPT Go (Max 1 Tahun)";
+                const link =
+                    document.getElementById("direct-link").value.trim();
+
+                accountData =
+`▰ Email : ${email}
+▰ Password : ${pass}`;
+
+                if (link) {
+                    accountData += `\n▰ Link OTP / MFA : ${link}`;
+                }
+
+                instructions =
+`${buildLoginInstruction(Boolean(link))}
+
+📌 KETENTUAN:
+• Akun bersifat private/personal.
+• Jangan mengganti email, password, atau pengaturan keamanan akun selama masa garansi.
+• Apabila akun mengalami kendala selama masa garansi, silakan hubungi admin.
+
+${buildWarrantyText(garansiHari)}`;
+
+            } else if (paketVal === "sharing") {
+                itemName = "AI ChatGPT Plus Sharing";
+                typeName = "Sharing 3–5 Orang";
+
+                const email =
+                    document.getElementById("direct-email").value.trim() || "-";
+
+                const pass =
+                    document.getElementById("direct-pass").value.trim() || "-";
+
+                const link =
+                    document.getElementById("direct-link").value.trim();
+
+                accountData =
+`▰ Email : ${email}
+▰ Password : ${pass}`;
+
+                if (link) {
+                    accountData += `\n▰ Link OTP / MFA : ${link}`;
+                }
+
+                instructions =
+`${buildLoginInstruction(Boolean(link))}
+
+📂 INSTRUKSI PAKET SHARING:
+• Akun digunakan bersama oleh sekitar 3–5 orang.
+• Setiap pengguna mendapatkan Folder / Project masing-masing.
+• Sebelum mengisi prompt atau mulai ngobrol dengan AI, masuk ke Folder / Project milik masing-masing terlebih dahulu.
+• Hal ini dilakukan supaya chat, prompt, file, dan jawaban AI tidak tercampur dengan pengguna lain.
+• Jangan membuka, mengubah, atau menghapus Folder / Project milik pengguna lain.
+
+⚠️ ATURAN PEMAKAIAN:
+• Gunakan akun secara normal dan sewajarnya.
+• Jangan menggunakan akun secara bar-bar, terlalu memaksa, atau mengirim permintaan terlalu sering.
+• Hindari penggunaan berat secara terus-menerus karena akun digunakan bersama pengguna lain.
+• Jangan mengganti email, password, nama akun, atau pengaturan keamanan.
+
+${buildWarrantyText(garansiHari)}`;
+
+            } else {
+                itemName = "AI ChatGPT Go (Max 1 Tahun)";
                 typeName = "Private Account (Personal)";
-                
-                const email = document.getElementById('direct-email').value || "-";
-                const pass = document.getElementById('direct-pass').value || "-";
-                
-                accountData = `▰ Email : ${email}\n▰ Password : ${pass}`;
 
-                instructions = `📝 INFO AKUN:
-1. Login menggunakan data di atas.
-2. Akun Private, bukan shared.
+                const email =
+                    document.getElementById("direct-email").value.trim() || "-";
 
-ℹ️ STATUS:
-* Paket Hemat (GO), jika ada kendala login silakan hubungi admin.`;
+                const pass =
+                    document.getElementById("direct-pass").value.trim() || "-";
+
+                const link =
+                    document.getElementById("direct-link").value.trim();
+
+                accountData =
+`▰ Email : ${email}
+▰ Password : ${pass}`;
+
+                if (link) {
+                    accountData += `\n▰ Link OTP / MFA : ${link}`;
+                }
+
+                instructions =
+`${buildLoginInstruction(Boolean(link))}
+
+📌 INFO AKUN:
+• Akun bersifat private, bukan sharing.
+• Jangan mengganti email, password, atau pengaturan keamanan akun.
+• Jika terdapat kendala login selama masa garansi, silakan hubungi admin.
+
+${buildWarrantyText(garansiHari)}`;
             }
 
-            // --- ASSEMBLING THE FINAL TEXT ---
-            let finalOutput = `╭────〔 BABAYSHOP.MY.ID 〕─
+            const finalOutput =
+`╭────〔 BABAYSHOP.MY.ID 〕────
 ┊・Item : ${itemName}
 ┊・Type : ${typeName}
 ┊・Order Date : ${tglOrder}
-┊・Garansi : ${paketVal === 'go' ? 'Max 1 Tahun' : tglGaransi}
+┊・Garansi : ${garansiHari} Hari — sampai ${tglGaransi}
 ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-📦 DATA AKSES PRIVAT :
+
+📦 DATA AKSES:
 ${accountData}
+
 ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
 ${instructions}
 
-🌐 Info lengkap: https://babayshop.my.id/gpt/`;
+🌐 Info lengkap:
+https://babayshop.my.id/gpt/`;
 
-            // Insert to Textarea
-            document.getElementById('output').value = finalOutput;
+            document.getElementById("output").value = finalOutput;
 
-            // Show Result
-            const resultSection = document.getElementById('result-section');
-            resultSection.style.display = 'block';
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Copy Function
-        function copyToClipboard() {
-            const copyText = document.getElementById("output");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value).then(() => {
-                const btn = document.getElementById("btn-copy");
-                btn.innerText = "Sudah Disalin!";
-                btn.style.background = "var(--accent)";
-                setTimeout(() => {
-                    btn.innerText = "Salin";
-                    btn.style.background = "#fff";
-                }, 2000);
+            const resultSection = document.getElementById("result-section");
+            resultSection.style.display = "block";
+            resultSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
             });
         }
 
-        // Reset Function
-        function resetForm() {
-            document.getElementById('result-section').style.display = 'none';
-            document.getElementById('invite-email').value = '';
-            document.getElementById('invite-team').value = '';
-            document.getElementById('direct-email').value = '';
-            document.getElementById('direct-pass').value = '';
-            document.getElementById('direct-link').value = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        async function copyToClipboard() {
+            const copyText = document.getElementById("output");
+            const button = document.getElementById("btn-copy");
+
+            try {
+                await navigator.clipboard.writeText(copyText.value);
+            } catch (error) {
+                copyText.select();
+                copyText.setSelectionRange(0, copyText.value.length);
+                document.execCommand("copy");
+            }
+
+            button.innerText = "Sudah Disalin!";
+            button.style.background = "var(--accent)";
+            button.style.color = "#000000";
+
+            setTimeout(() => {
+                button.innerText = "Salin";
+                button.style.background = "#ffffff";
+                button.style.color = "#000000";
+            }, 2000);
         }
 
-        // Init
+        function resetForm() {
+            document.getElementById("result-section").style.display = "none";
+            document.getElementById("invite-email").value = "";
+            document.getElementById("invite-team").value = "";
+            document.getElementById("direct-email").value = "";
+            document.getElementById("direct-pass").value = "";
+            document.getElementById("direct-link").value = "";
+            document.getElementById("output").value = "";
+            document.getElementById("custom-date").value = getLocalDateString();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
         toggleFields();
     </script>
 </body>
