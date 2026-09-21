@@ -3,441 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Refund - Babayshop</title>
+    <title>Mengalihkan Halaman...</title>
+    
+    <!-- Redirect via Meta Refresh (0 detik) -->
+    <meta http-equiv="refresh" content="0; url=https://babay.web.id/refund">
+
+    <!-- Redirect via JavaScript -->
+    <script>
+        window.location.replace("https://babay.web.id/refund");
+    </script>
+
     <style>
-        :root {
-            --primary: #2563eb;
-            --wa-color: #25D366;
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #1f2937;
-            --border: #d1d5db;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: var(--card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 480px;
-            margin-bottom: 50px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #f3f4f6;
-            padding-bottom: 1rem;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.6rem;
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        .header p {
-            margin: 5px 0 0;
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-
-        .form-section {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #374151;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            background: #f9fafb;
-            transition: all 0.2s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        /* LIVE INDICATOR STYLE */
-        #liveInfo {
-            display: none; /* Hidden by default */
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.95rem;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-
-        .live-normal {
-            background-color: #dbeafe;
-            color: #1e40af;
-            border: 1px solid #bfdbfe;
-        }
-
-        .live-error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-        }
-
-        button.btn-calc {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: background 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
-        }
-
-        button.btn-calc:hover {
-            background-color: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        /* Result Section */
-        #result-area {
-            display: none;
-            margin-top: 2rem;
-            border-top: 2px dashed #e5e7eb;
-            padding-top: 1.5rem;
-        }
-
-        .preview-box {
-            position: relative;
-        }
-
-        textarea {
-            width: 100%;
-            height: 250px;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            background-color: #fffbeb; 
-            color: #333;
-            resize: vertical;
-            box-sizing: border-box;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 10px;
-        }
-
-        .btn-copy, .btn-wa {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.95rem;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 6px;
-        }
-
-        .btn-copy { background-color: #4b5563; color: white; }
-        .btn-wa { background-color: var(--wa-color); color: white; }
-        
-        .footer {
-            margin-top: 30px;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8fafc;
+            color: #334155;
             text-align: center;
-            font-size: 0.75rem;
-            color: #9ca3af;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        
-        .helper-text {
-            font-size: 0.75rem;
-            color: #6b7280;
-            margin-top: 2px;
-            font-style: italic;
+        .container {
+            background: #ffffff;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            width: 100%;
         }
-
-        hr.divider {
-            border: 0;
-            border-top: 1px solid #e5e7eb;
-            margin: 15px 0;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        a.btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 10px 20px;
+            background-color: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        a.btn:hover {
+            background-color: #1d4ed8;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
-        <h1>Babayshop Refund</h1>
-        <p>Kalkulator Prorata & Generator Nota</p>
+    <div class="container">
+        <div class="spinner"></div>
+        <h2>Sedang Mengalihkan...</h2>
+        <p>Anda sedang dialihkan ke halaman formulir/informasi refund.</p>
+        <p>Jika halaman tidak berpindah secara otomatis, silakan klik tombol di bawah ini:</p>
+        <a class="btn" href="https://babay.web.id/refund">Klik di Sini untuk Melanjutkan</a>
     </div>
-
-    <form id="refundForm" class="form-section">
-        
-        <div>
-            <label for="custPhone">No. WA Customer (Opsional)</label>
-            <input type="number" id="custPhone" placeholder="Contoh: 08123456789">
-        </div>
-
-        <hr class="divider">
-
-        <div>
-            <label for="appName">Nama Aplikasi</label>
-            <input type="text" id="appName" placeholder="Contoh: CapCut Pro, Netflix..." required>
-        </div>
-
-        <div>
-            <label for="purchaseDate">Tanggal Beli</label>
-            <input type="date" id="purchaseDate" required oninput="liveCheck()">
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>
-                <label for="duration">Durasi (Hari)</label>
-                <input type="number" id="duration" value="28" placeholder="28" required oninput="liveCheck()">
-            </div>
-            <div>
-                <label for="price">Harga Beli (Rp)</label>
-                <input type="number" id="price" placeholder="20000" required oninput="liveCheck()">
-            </div>
-        </div>
-
-        <div>
-            <label for="stopDate">Tanggal Stop / Error</label>
-            <input type="date" id="stopDate" required oninput="liveCheck()">
-        </div>
-
-        <div id="liveInfo">
-            Menunggu input tanggal...
-        </div>
-
-        <hr class="divider">
-
-         <div>
-            <label for="resolutionType">Pilih Solusi / Tindakan</label>
-            <select id="resolutionType">
-                <option value="refund">💸 Refund Uang (Transfer)</option>
-                <option value="replace">🔄 Ganti Akun / Aplikasi Lain</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="adminFee">Potongan Biaya Layanan (Rp)</label>
-            <input type="number" id="adminFee" placeholder="0" value="0">
-        </div>
-
-        <button type="button" class="btn-calc" onclick="calculateRefund()">📝 Buat Nota Sekarang</button>
-    </form>
-
-    <div id="result-area">
-        <label>Preview Pesan (Bisa diedit manual):</label>
-        <div class="preview-box">
-            <textarea id="msgPreview"></textarea>
-        </div>
-
-        <div class="action-buttons">
-            <button class="btn-copy" onclick="copyText()">
-                📋 Salin
-            </button>
-            <button class="btn-wa" onclick="sendWA()">
-                🚀 Kirim WA
-            </button>
-        </div>
-    </div>
-
-    <div class="footer">
-        &copy; 2025 Babayshop Official Tools
-    </div>
-</div>
-
-<script>
-    // Set default date to today for Stop Date
-    document.getElementById('stopDate').valueAsDate = new Date();
-
-    // Fungsi Live Check (Jalan setiap user ketik/ganti tanggal)
-    function liveCheck() {
-        const purchaseDateVal = document.getElementById('purchaseDate').value;
-        const stopDateVal = document.getElementById('stopDate').value;
-        const durationDays = parseInt(document.getElementById('duration').value) || 0;
-        const liveInfo = document.getElementById('liveInfo');
-
-        // Jika tanggal belum lengkap, sembunyikan atau reset
-        if (!purchaseDateVal || !stopDateVal) {
-            liveInfo.style.display = 'none';
-            return;
-        }
-
-        const start = new Date(purchaseDateVal);
-        const stop = new Date(stopDateVal);
-        start.setHours(0,0,0,0);
-        stop.setHours(0,0,0,0);
-
-        const oneDay = 24 * 60 * 60 * 1000;
-        const diffUsed = Math.round((stop - start) / oneDay);
-        const remainingDays = durationDays - diffUsed;
-
-        liveInfo.style.display = 'block';
-
-        if (diffUsed < 0) {
-            // Error tanggal stop sebelum beli
-            liveInfo.className = 'live-error';
-            liveInfo.innerHTML = `⚠️ Error: Tanggal Stop sebelum Tanggal Beli!`;
-        } else if (remainingDays <= 0) {
-            // Habis masa aktif
-            liveInfo.className = 'live-error';
-            liveInfo.innerHTML = `⚠️ Masa Aktif Habis (Minus ${Math.abs(remainingDays)} hari)`;
-        } else {
-            // Normal
-            liveInfo.className = 'live-normal';
-            liveInfo.innerHTML = `✅ Terpakai: ${diffUsed} Hari &nbsp;|&nbsp; ⏳ Sisa: ${remainingDays} Hari`;
-        }
-    }
-
-    function formatRupiah(number) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
-    }
-
-    function formatDate(dateStr) {
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        return new Date(dateStr).toLocaleDateString('id-ID', options);
-    }
-
-    // Fungsi Utama Buat Nota (Sama seperti sebelumnya tapi pakai data validasi)
-    function calculateRefund() {
-        const appName = document.getElementById('appName').value;
-        const purchaseDateVal = document.getElementById('purchaseDate').value;
-        const durationDays = parseInt(document.getElementById('duration').value);
-        const price = parseFloat(document.getElementById('price').value);
-        const stopDateVal = document.getElementById('stopDate').value;
-        const resolution = document.getElementById('resolutionType').value;
-        let adminFee = parseFloat(document.getElementById('adminFee').value);
-
-        if (!purchaseDateVal || !stopDateVal || !durationDays || !price) {
-            alert("Mohon lengkapi data pembelian!");
-            return;
-        }
-        if (isNaN(adminFee)) adminFee = 0;
-
-        const start = new Date(purchaseDateVal);
-        const stop = new Date(stopDateVal);
-        start.setHours(0,0,0,0);
-        stop.setHours(0,0,0,0);
-
-        const oneDay = 24 * 60 * 60 * 1000;
-        const diffUsed = Math.round((stop - start) / oneDay);
-        
-        if (diffUsed < 0) {
-            alert("Tanggal stop error!"); return;
-        }
-
-        const remainingDays = durationDays - diffUsed;
-        let messageBody = "";
-
-        if (remainingDays <= 0) {
-            messageBody = `*INFO LAYANAN BABAYSHOP*\n\n` +
-                          `Halo Kak, mohon maaf untuk akun ${appName}.\n` +
-                          `Masa aktif paket sudah habis (Total pakai: ${diffUsed} hari).\n` +
-                          `Tidak ada refund tersedia. Terima kasih. 🙏`;
-        } else {
-            const pricePerDay = price / durationDays;
-            const grossRefund = Math.floor(pricePerDay * remainingDays);
-            let netRefund = grossRefund - adminFee;
-            if (netRefund < 0) netRefund = 0;
-
-            let commonHeader = `*INFO KENDALA AKUN - BABAYSHOP*\n\n` +
-                `Halo Kak, mohon maaf atas ketidaknyamanan kendala akunnya. Berikut rincian perhitungan prorata (sisa masa aktif):\n\n` +
-                `📦 *Aplikasi:* ${appName}\n` +
-                `📅 *Tgl Beli:* ${formatDate(purchaseDateVal)}\n` +
-                `📅 *Tgl Error:* ${formatDate(stopDateVal)}\n` +
-                `----------------------------------\n` +
-                `💰 Harga Awal: ${formatRupiah(price)}\n` +
-                `⏱️ Durasi Paket: ${durationDays} Hari\n` +
-                `✅ Terpakai: ${diffUsed} Hari\n` +
-                `❌ Sisa Durasi: ${remainingDays} Hari\n` +
-                `----------------------------------\n` +
-                `💵 Nilai Sisa: ${formatRupiah(grossRefund)}\n`;
-            
-            if (adminFee > 0) {
-                commonHeader += `✂️ Potongan Layanan: -${formatRupiah(adminFee)}\n`;
-            }
-            commonHeader += `----------------------------------\n`;
-
-            if (resolution === 'refund') {
-                messageBody = commonHeader +
-                    `*TOTAL PENGEMBALIAN DANA: ${formatRupiah(netRefund)}*\n\n` +
-                    `Mohon balas pesan ini dengan format:\n` +
-                    `🏦 Nama E-Wallet/Bank: \n` +
-                    `💳 Nomor Rekening: \n` +
-                    `👤 Atas Nama: \n\n` +
-                    `Terima kasih pengertiannya. 🙏`;
-            } else {
-                messageBody = commonHeader +
-                    `*TOTAL SALDO TERSISA: ${formatRupiah(netRefund)}*\n\n` +
-                    `💡 *SOLUSI PENGGANTIAN:*\n` +
-                    `Saldo sebesar *${formatRupiah(netRefund)}* ini akan kami alihkan untuk:\n` +
-                    `1. Pembuatan Akun Baru (Reset durasi), atau\n` +
-                    `2. Tukar dengan Aplikasi Premium lain yang setara.\n\n` +
-                    `Mohon infokan pilihannya ya kak? Terima kasih. 🙏`;
-            }
-        }
-
-        document.getElementById('msgPreview').value = messageBody;
-        document.getElementById('result-area').style.display = 'block';
-        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function copyText() {
-        const text = document.getElementById('msgPreview').value;
-        navigator.clipboard.writeText(text).then(() => { alert("Nota berhasil disalin!"); });
-    }
-
-    function sendWA() {
-        const text = document.getElementById('msgPreview').value;
-        let phone = document.getElementById('custPhone').value;
-        const encodedText = encodeURIComponent(text);
-        let url = phone ? (phone.startsWith('0') ? `https://wa.me/62${phone.substring(1)}?text=${encodedText}` : `https://wa.me/${phone}?text=${encodedText}`) : `https://wa.me/?text=${encodedText}`;
-        window.open(url, '_blank');
-    }
-</script>
-
 </body>
 </html>
